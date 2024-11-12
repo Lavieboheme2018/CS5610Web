@@ -1,6 +1,6 @@
 // server.js
 const express = require('express');
-const connectDB = require('./db'); // Note that we don’t need to destructure here
+const connectDB = require('./db');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 
 // Connect to MongoDB
-connectDB(); // Connect using Mongoose
+connectDB();
 
 // Import routes
 const userRoutes = require('./routes/userRoutes');
