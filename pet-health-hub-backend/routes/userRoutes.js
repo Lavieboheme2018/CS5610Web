@@ -1,25 +1,33 @@
+// routes/userRoutes.js
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const auth = require('../middleware/auth'); // Middleware to protect routes
 
-// Register a new user
-router.post('/register', async (req, res) => {
-  const { email, password } = req.body;
+// Get user profile (Protected route)
+router.get('/profile', auth, async (req, res) => {
   try {
-    const newUser = new User({ email, password });
-    await newUser.save();
-    res.status(201).json(newUser);
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// Get user by ID
-router.get('/:id', async (req, res) => {
+// Update user profile (Protected route)
+router.put('/profile', auth, async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const user = await User.findById(req.params.id);
+    let user = await User.findById(req.user.id);
     if (!user) return res.status(404).json({ message: "User not found" });
-    res.json(user);
+
+    // Update fields if provided
+    if (email) user.email = email;
+    if (password) user.password = await bcrypt.hash(password, 10); // Hash new password if updated
+
+    await user.save();
+    res.json({ message: "Profile updated successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
