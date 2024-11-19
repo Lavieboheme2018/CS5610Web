@@ -1,0 +1,11 @@
+/* src/pages/HomePage.css */
+.homepage {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .homepage > * {
+    margin-bottom: 20px;
+  }
