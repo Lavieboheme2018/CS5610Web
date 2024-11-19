@@ -1,18 +1,18 @@
 import React from 'react';
 import '../styles/FeaturePreview.css';
 
-function FeaturePreview({ isLoggedIn }) {
+function FeaturePreview({ pets }) {
   return (
     <div className="feature-preview">
-      <h2>{isLoggedIn ? 'Recent Pet Activities or Health Records' : 'Example of Pet Activities or Health Records'}</h2>
+      <h2>Your Pets Medical Reminder</h2>
       <div className="pet-activities">
-        {[1, 2, 3].map((pet) => (
-          <div key={pet} className="pet-card">
-            <img src="placeholder.jpg" alt={`Pet ${pet}`} />
-            <h3>Pet {String.fromCharCode(64 + pet)}</h3>
-            <div>Health Conditions</div>
-            <div>Medications</div>
-            <div>Upcoming Reminders</div>
+        {pets.map((pet) => (
+          <div key={pet._id} className="pet-card">
+            <img src="placeholder.jpg" alt={pet.name} />
+            <h3>{pet.name}</h3>
+            <p><strong>Breed:</strong> {pet.breed}</p>
+            <p><strong>Age:</strong> {pet.age} years</p>
+            <p><strong>Weight:</strong> {pet.weight} kg</p>
           </div>
         ))}
       </div>
