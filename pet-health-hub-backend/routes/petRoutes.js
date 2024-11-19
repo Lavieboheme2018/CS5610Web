@@ -1,4 +1,3 @@
-// routes/petRoutes.js
 const express = require('express');
 const router = express.Router();
 const Pet = require('../models/Pet');
@@ -8,7 +7,13 @@ const auth = require('../middleware/auth');
 router.post('/create', auth, async (req, res) => {
   const { name, age, breed, weight } = req.body;
   try {
-    const newPet = new Pet({ name, age, breed, weight, owner: req.user.id });
+    const newPet = new Pet({
+      name,
+      age,
+      breed,
+      weight,
+      owner: req.user.id, // Bind pet to the logged-in user
+    });
     await newPet.save();
     res.status(201).json(newPet);
   } catch (error) {
@@ -17,9 +22,9 @@ router.post('/create', auth, async (req, res) => {
 });
 
 // Get all pets for a user (Protected route)
-router.get('/user/:userId', auth, async (req, res) => {
+router.get('/user', auth, async (req, res) => {
   try {
-    const pets = await Pet.find({ owner: req.params.userId });
+    const pets = await Pet.find({ owner: req.user.id }); // Fetch pets belonging to the user
     res.json(pets);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -32,13 +37,17 @@ router.put('/:id', auth, async (req, res) => {
   const { name, age, breed, weight } = req.body;
 
   try {
-    const pet = await Pet.findOneAndUpdate(
-      { _id: id, owner: req.user.id },
+    const updatedPet = await Pet.findOneAndUpdate(
+      { _id: id, owner: req.user.id }, // Ensure only the owner can update
       { name, age, breed, weight },
-      { new: true }
+      { new: true } // Return the updated document
     );
-    if (!pet) return res.status(404).json({ message: 'Pet not found' });
-    res.json(pet);
+
+    if (!updatedPet) {
+      return res.status(404).json({ message: 'Pet not found' });
+    }
+
+    res.json(updatedPet);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -49,8 +58,15 @@ router.delete('/:id', auth, async (req, res) => {
   const { id } = req.params;
 
   try {
-    const pet = await Pet.findOneAndDelete({ _id: id, owner: req.user.id });
-    if (!pet) return res.status(404).json({ message: 'Pet not found' });
+    const deletedPet = await Pet.findOneAndDelete({
+      _id: id,
+      owner: req.user.id, // Ensure only the owner can delete
+    });
+
+    if (!deletedPet) {
+      return res.status(404).json({ message: 'Pet not found' });
+    }
+
     res.json({ message: 'Pet deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });

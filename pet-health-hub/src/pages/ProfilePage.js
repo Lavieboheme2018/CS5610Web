@@ -1,4 +1,3 @@
-// src/pages/ProfilePage.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
@@ -8,6 +7,7 @@ import '../styles/ProfilePage.css';
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const [pets, setPets] = useState([]);
+  const [editingPet, setEditingPet] = useState(null); // Track the pet being edited
   const [newPet, setNewPet] = useState({
     name: '',
     breed: '',
@@ -103,6 +103,37 @@ const ProfilePage = () => {
     }
   };
 
+  const handleEditPet = (pet) => {
+    setEditingPet(pet); // Set the pet to be edited
+  };
+
+  const handleUpdatePet = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch(`http://localhost:3001/api/pets/${editingPet._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(editingPet),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update pet');
+      }
+
+      const updatedPet = await response.json();
+      setPets((prevPets) =>
+        prevPets.map((pet) => (pet._id === updatedPet._id ? updatedPet : pet))
+      );
+      setEditingPet(null); // Clear editing state
+    } catch (error) {
+      console.error('Error updating pet:', error);
+    }
+  };
+
   const handleDeletePet = async (petId) => {
     const token = localStorage.getItem('token');
     try {
@@ -131,93 +162,119 @@ const ProfilePage = () => {
     <div className="profile-page">
       <Header />
       <div className="profile-content">
-        {/* 用户资料部分 */}
+        {/* User Profile Section */}
         <section className="user-profile">
-          <h2>用户资料</h2>
+          <h2>User Profile</h2>
           <div className="user-details">
             <div className="user-avatar">
               <div className="avatar-placeholder"></div>
             </div>
             <div className="user-info">
-              <div className="form-group">
-                <label>姓名</label>
-                <input type="text" value={user.name || ''} readOnly />
-              </div>
-              <div className="form-group">
-                <label>邮箱</label>
-                <input type="email" value={user.email} readOnly />
-              </div>
+              <p><strong>Name:</strong> {user.name}</p>
+              <p><strong>Email:</strong> {user.email}</p>
             </div>
           </div>
         </section>
 
-        {/* 宠物资料部分 */}
+        {/* Pets Profile Section */}
         <section className="pets-profile">
-          <h2>宠物资料</h2>
+          <h2>Pets</h2>
           <div className="pets-list">
             {pets.map((pet) => (
               <div key={pet._id} className="pet-card">
-                <div className="pet-avatar">
-                  <div className="avatar-placeholder"></div>
-                  <p>{pet.name}</p>
-                </div>
-                <div className="pet-details">
-                  <p><strong>品种:</strong> {pet.breed}</p>
-                  <p><strong>年龄:</strong> {pet.age} 岁</p>
-                  <p><strong>体重:</strong> {pet.weight} kg</p>
-                </div>
-                <div className="pet-actions">
-                  <button onClick={() => handleDeletePet(pet._id)}>删除</button>
-                </div>
+                <h3>{pet.name}</h3>
+                <p><strong>Breed:</strong> {pet.breed}</p>
+                <p><strong>Age:</strong> {pet.age} years</p>
+                <p><strong>Weight:</strong> {pet.weight} kg</p>
+                <button onClick={() => handleEditPet(pet)}>Edit</button>
+                <button onClick={() => handleDeletePet(pet._id)}>Delete</button>
               </div>
             ))}
           </div>
-          <div className="add-pet-form">
-            <h3>添加新宠物</h3>
-            <form onSubmit={handleAddPet}>
-              <div className="form-group">
-                <label>姓名</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={newPet.name}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>品种</label>
-                <input
-                  type="text"
-                  name="breed"
-                  value={newPet.breed}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>年龄</label>
-                <input
-                  type="number"
-                  name="age"
-                  value={newPet.age}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>体重 (kg)</label>
-                <input
-                  type="number"
-                  name="weight"
-                  value={newPet.weight}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <button type="submit">添加宠物</button>
+          {editingPet && (
+            <form className="edit-pet-form" onSubmit={handleUpdatePet}>
+              <h3>Edit Pet</h3>
+              <input
+                type="text"
+                name="name"
+                value={editingPet.name}
+                onChange={(e) =>
+                  setEditingPet({ ...editingPet, name: e.target.value })
+                }
+                required
+              />
+              <input
+                type="text"
+                name="breed"
+                value={editingPet.breed}
+                onChange={(e) =>
+                  setEditingPet({ ...editingPet, breed: e.target.value })
+                }
+                required
+              />
+              <input
+                type="number"
+                name="age"
+                value={editingPet.age}
+                onChange={(e) =>
+                  setEditingPet({ ...editingPet, age: e.target.value })
+                }
+                required
+              />
+              <input
+                type="number"
+                name="weight"
+                value={editingPet.weight}
+                onChange={(e) =>
+                  setEditingPet({ ...editingPet, weight: e.target.value })
+                }
+                required
+              />
+              <button type="submit">Save</button>
+              <button type="button" onClick={() => setEditingPet(null)}>
+                Cancel
+              </button>
             </form>
-          </div>
+          )}
+        </section>
+
+        <section className="add-pet">
+          <h3>Add a New Pet</h3>
+          <form onSubmit={handleAddPet}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={newPet.name}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="text"
+              name="breed"
+              placeholder="Breed"
+              value={newPet.breed}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="number"
+              name="age"
+              placeholder="Age"
+              value={newPet.age}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="number"
+              name="weight"
+              placeholder="Weight (kg)"
+              value={newPet.weight}
+              onChange={handleInputChange}
+              required
+            />
+            <button type="submit">Add Pet</button>
+          </form>
         </section>
       </div>
       <Footer />
