@@ -27,7 +27,7 @@ https://docs.google.com/document/d/1V2sQEH0qCQt1l59_vDzWt1inwqAcjk4ZrZDPBVrHl4U/
    
 4. Start the server:
    ```bash
-   npm start
+   node server.js
    ```
    The backend will run at **`http://localhost:3001`** by default.
 
