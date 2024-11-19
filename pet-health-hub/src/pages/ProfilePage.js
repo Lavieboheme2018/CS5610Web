@@ -170,7 +170,6 @@ const ProfilePage = () => {
               <div className="avatar-placeholder"></div>
             </div>
             <div className="user-info">
-              <p><strong>Name:</strong> {user.name}</p>
               <p><strong>Email:</strong> {user.email}</p>
             </div>
           </div>

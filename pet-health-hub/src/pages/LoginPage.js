@@ -61,69 +61,74 @@ const LoginPage = () => {
     <div className="login-page">
       <Header />
       <div className="login-container">
-        <div className="login-header">
-          <h1>Welcome!</h1>
-          <p>Let's get started.</p>
+        <div className="login-image">
+          <div className="placeholder">Picture of dog / cat here</div>
         </div>
-        <div className="login-tabs">
-          <button
-            className={activeTab === 'login' ? 'active' : ''}
-            onClick={() => handleTabSwitch('login')}
-          >
-            Log In
-          </button>
-          <button
-            className={activeTab === 'signup' ? 'active' : ''}
-            onClick={() => handleTabSwitch('signup')}
-          >
-            Sign Up
-          </button>
+        <div className="login-form-container">
+          <div className="login-header">
+            <h1>Welcome!</h1>
+            <p>Let's get started.</p>
+          </div>
+          <div className="login-tabs">
+            <button
+              className={activeTab === 'login' ? 'active' : ''}
+              onClick={() => handleTabSwitch('login')}
+            >
+              Log In
+            </button>
+            <button
+              className={activeTab === 'signup' ? 'active' : ''}
+              onClick={() => handleTabSwitch('signup')}
+            >
+              Sign Up
+            </button>
+          </div>
+          {activeTab === 'login' ? (
+            <form className="login-form" onSubmit={handleLogin}>
+              <div className="form-group">
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" className="login-button">Log In</button>
+            </form>
+          ) : (
+            <form className="signup-form" onSubmit={handleSignup}>
+              <div className="form-group">
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" className="login-button">Sign Up</button>
+            </form>
+          )}
         </div>
-        {activeTab === 'login' ? (
-          <form className="login-form" onSubmit={handleLogin}>
-            <div className="form-group">
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <button type="submit">Log In</button>
-          </form>
-        ) : (
-          <form className="signup-form" onSubmit={handleSignup}>
-            <div className="form-group">
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <button type="submit">Sign Up</button>
-          </form>
-        )}
       </div>
       <Footer />
     </div>
