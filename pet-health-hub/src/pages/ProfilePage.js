@@ -1,27 +1,36 @@
 // src/pages/ProfilePage.js
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { UserContext } from '../context/UserContext';
 import '../styles/ProfilePage.css';
 
 const ProfilePage = () => {
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const [pets, setPets] = useState([]);
   const [newPet, setNewPet] = useState({ name: '', age: '', breed: '', weight: '' });
 
+  // Fetch pets owned by the logged-in user
   const fetchPets = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/pets/user/USER_ID', {
+      const response = await fetch(`http://localhost:3001/api/pets/user/${user.id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      const data = await response.json();
-      setPets(data);
+      if (response.ok) {
+        const data = await response.json();
+        setPets(data);
+      }
     } catch (error) {
       console.error('Error fetching pets:', error.message);
     }
   };
 
+  // Add a new pet
   const handleAddPet = async (e) => {
     e.preventDefault();
     try {
@@ -43,6 +52,7 @@ const ProfilePage = () => {
     }
   };
 
+  // Update an existing pet
   const handleUpdatePet = async (id, updatedData) => {
     try {
       const response = await fetch(`http://localhost:3001/api/pets/${id}`, {
@@ -62,6 +72,7 @@ const ProfilePage = () => {
     }
   };
 
+  // Delete a pet
   const handleDeletePet = async (id) => {
     try {
       const response = await fetch(`http://localhost:3001/api/pets/${id}`, {
@@ -79,13 +90,18 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
-    fetchPets();
-  }, []);
+    if (!user) {
+      navigate('/login'); // Redirect to login page if user is not logged in
+    } else {
+      fetchPets(); // Fetch pets if user is logged in
+    }
+  }, [user, navigate]);
 
-  return (
+  return user ? (
     <div className="profile-page">
       <Header />
       <div className="profile-content">
+        {/* Add Pet Form */}
         <section className="add-pet">
           <h2>Add a New Pet</h2>
           <form onSubmit={handleAddPet}>
@@ -121,6 +137,7 @@ const ProfilePage = () => {
           </form>
         </section>
 
+        {/* Pet List */}
         <section className="pets-profile">
           <h2>My Pets</h2>
           <div className="pets-list">
@@ -132,7 +149,12 @@ const ProfilePage = () => {
                 <p>Weight: {pet.weight} kg</p>
                 <button
                   onClick={() =>
-                    handleUpdatePet(pet._id, { name: 'Updated Name', age: pet.age, breed: pet.breed, weight: pet.weight })
+                    handleUpdatePet(pet._id, {
+                      name: 'Updated Name',
+                      age: pet.age,
+                      breed: pet.breed,
+                      weight: pet.weight,
+                    })
                   }
                 >
                   Update
@@ -145,7 +167,7 @@ const ProfilePage = () => {
       </div>
       <Footer />
     </div>
-  );
+  ) : null;
 };
 
 export default ProfilePage;
