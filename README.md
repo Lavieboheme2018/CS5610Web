@@ -5,6 +5,156 @@
 https://docs.google.com/document/d/1V2sQEH0qCQt1l59_vDzWt1inwqAcjk4ZrZDPBVrHl4U/edit?tab=t.0 
 ---
 
+## **1. Instructions to Set Up and Run the Project Locally**
+
+### **Backend**
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/pet-health-hub.git
+   cd pet-health-hub-backend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. create .env:
+   ```bash
+   MONGO_URI=mongodb+srv://cs5610final:cs5610final@cluster0.ojfdl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+   JWT_SECRET=your_secret_key
+   ```
+   
+4. Start the server:
+   ```bash
+   npm start
+   ```
+   The backend will run at **`http://localhost:3001`** by default.
+
+---
+
+### **Frontend**
+1. Navigate to the frontend directory:
+   ```bash
+   cd pet-health-hub/src
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the React application:
+   ```bash
+   npm start
+   ```
+   The frontend will run at **`http://localhost:3000`** by default.
+
+---
+
+## **2. Required Dependencies and Installation Commands**
+
+### **Backend Dependencies**
+- **Express.js** for server-side routing:
+  ```bash
+  npm install express
+  ```
+- **Mongoose** for database management:
+  ```bash
+  npm install mongoose
+  ```
+- **JWT** for authentication:
+  ```bash
+  npm install jsonwebtoken
+  ```
+- **Bcrypt** for password hashing:
+  ```bash
+  npm install bcrypt
+  ```
+- **Dotenv** for environment variable management:
+  ```bash
+  npm install dotenv
+  ```
+
+### **Frontend Dependencies**
+- **React Router DOM** for routing:
+  ```bash
+  npm install react-router-dom
+  ```
+- **Bootstrap** for styling:
+  ```bash
+  npm install bootstrap
+  ```
+- **Axios** for API calls (optional if fetch API is used):
+  ```bash
+  npm install axios
+  ```
+
+---
+
+## **3. Database Setup Instructions**
+
+### **MongoDB Schema**
+The application uses MongoDB to store user and pet data. Below are the schemas used:
+
+#### **User Schema**
+```json
+{
+  "email": "string (unique, required)",
+  "password": "string (hashed, required)",
+  "createdAt": "Date (default: Date.now)"
+}
+```
+
+#### **Pet Schema**
+```json
+{
+  "name": "string (required)",
+  "breed": "string (required)",
+  "age": "number (required)",
+  "weight": "number (required)",
+  "owner": "ObjectId (referencing User, required)",
+  "createdAt": "Date (default: Date.now)"
+}
+```
+
+### **Sample Data**
+You can use the following sample data for initial testing:
+
+#### **User**
+```json
+{
+  "email": "testuser@example.com",
+  "password": "hashed-password"
+}
+```
+
+#### **Pet**
+```json
+{
+  "name": "Buddy",
+  "breed": "Golden Retriever",
+  "age": 5,
+  "weight": 30,
+  "owner": "ObjectId (corresponding to user)"
+}
+```
+
+---
+
+## **4. Sample Environment Variables**
+
+Create a `.env` file in the root of the **backend** directory with the following content:
+
+```plaintext
+MONGO_URI=mongodb+srv://cs5610final:cs5610final@cluster0.ojfdl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+JWT_SECRET=your_secret_key
+```
+
+Replace `<username>`, `<password>`, and `<database>` with your MongoDB credentials.
+
+---
+
 ## Project Description
 
 ### Overview
