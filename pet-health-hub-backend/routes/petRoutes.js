@@ -73,4 +73,19 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
+// Search pets (Protected route)
+router.get('/search', auth, async (req, res) => {
+  const { name, breed } = req.query; // Search by name or breed
+  try {
+    const query = { owner: req.user.id }; // Restrict search to the logged-in user's pets
+    if (name) query.name = { $regex: name, $options: 'i' }; // Case-insensitive search for name
+    if (breed) query.breed = { $regex: breed, $options: 'i' }; // Case-insensitive search for breed
+
+    const pets = await Pet.find(query);
+    res.json(pets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

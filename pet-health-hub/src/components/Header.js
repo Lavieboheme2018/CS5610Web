@@ -20,6 +20,7 @@ function Header() {
         <button onClick={() => navigate('/')}>Home</button>
         <button onClick={() => navigate('/about')}>About</button>
         <button onClick={() => navigate('/resources')}>Resources</button>
+        <button onClick={() => navigate('/search')}>Search</button>
         {user ? (
           <>
             <button onClick={() => navigate('/profile')}>Profile</button>
