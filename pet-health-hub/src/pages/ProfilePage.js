@@ -8,6 +8,8 @@ const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const [pets, setPets] = useState([]);
   const [editingPet, setEditingPet] = useState(null); // Track the pet being edited
+  const [editingField, setEditingField] = useState(null); // 'email' or 'password'
+  const [updatedValue, setUpdatedValue] = useState('');
   const [newPet, setNewPet] = useState({
     name: '',
     breed: '',
@@ -154,6 +156,37 @@ const ProfilePage = () => {
     }
   };
 
+  const handleUpdateProfile = async (field) => {
+    const token = localStorage.getItem('token');
+    try {
+      const body =
+        field === 'email'
+          ? { email: updatedValue }
+          : { password: updatedValue };
+
+      const response = await fetch('http://localhost:3001/api/users/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile');
+      }
+
+      if (field === 'email') {
+        setUser((prevUser) => ({ ...prevUser, email: updatedValue }));
+      }
+      setEditingField(null);
+      alert(`${field.charAt(0).toUpperCase() + field.slice(1)} updated successfully!`);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -170,7 +203,54 @@ const ProfilePage = () => {
               <div className="avatar-placeholder"></div>
             </div>
             <div className="user-info">
-              <p><strong>Email:</strong> {user.email}</p>
+              <p>
+                <strong>Email:</strong> {user.email}
+                <button onClick={() => setEditingField('email')}>Edit</button>
+              </p>
+              {editingField === 'email' && (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleUpdateProfile('email');
+                  }}
+                >
+                  <input
+                    type="email"
+                    value={updatedValue}
+                    onChange={(e) => setUpdatedValue(e.target.value)}
+                    placeholder="Enter new email"
+                    required
+                  />
+                  <button type="submit">Save</button>
+                  <button type="button" onClick={() => setEditingField(null)}>
+                    Cancel
+                  </button>
+                </form>
+              )}
+              <p>
+                <strong>Password:</strong> ********
+                <button onClick={() => setEditingField('password')}>Change</button>
+              </p>
+              {editingField === 'password' && (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleUpdateProfile('password');
+                  }}
+                >
+                  <input
+                    type="password"
+                    value={updatedValue}
+                    onChange={(e) => setUpdatedValue(e.target.value)}
+                    placeholder="Enter new password"
+                    required
+                  />
+                  <button type="submit">Save</button>
+                  <button type="button" onClick={() => setEditingField(null)}>
+                    Cancel
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </section>
@@ -182,9 +262,15 @@ const ProfilePage = () => {
             {pets.map((pet) => (
               <div key={pet._id} className="pet-card">
                 <h3>{pet.name}</h3>
-                <p><strong>Breed:</strong> {pet.breed}</p>
-                <p><strong>Age:</strong> {pet.age} years</p>
-                <p><strong>Weight:</strong> {pet.weight} kg</p>
+                <p>
+                  <strong>Breed:</strong> {pet.breed}
+                </p>
+                <p>
+                  <strong>Age:</strong> {pet.age} years
+                </p>
+                <p>
+                  <strong>Weight:</strong> {pet.weight} kg
+                </p>
                 <button onClick={() => handleEditPet(pet)}>Edit</button>
                 <button onClick={() => handleDeletePet(pet._id)}>Delete</button>
               </div>
