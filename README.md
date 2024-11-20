@@ -2,7 +2,10 @@
 
 ## Group3
 - **Team Members:** Wanyi Jiang, Sara Bavan, Kehan Yan
-https://docs.google.com/document/d/1V2sQEH0qCQt1l59_vDzWt1inwqAcjk4ZrZDPBVrHl4U/edit?tab=t.0 
+https://docs.google.com/document/d/1V2sQEH0qCQt1l59_vDzWt1inwqAcjk4ZrZDPBVrHl4U/edit?tab=t.0
+
+DEMO 01
+https://youtu.be/EEiAfHAMnSM 
 ---
 
 ## **1. Instructions to Set Up and Run the Project Locally**
