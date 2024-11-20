@@ -19,11 +19,13 @@ https://docs.google.com/document/d/1V2sQEH0qCQt1l59_vDzWt1inwqAcjk4ZrZDPBVrHl4U/
    npm install
    ```
 
-2. create .env:
+3. Set up the environment variables by creating a .env file in the backend directory with the following contents:
    ```bash
    MONGO_URI=mongodb+srv://cs5610final:cs5610final@cluster0.ojfdl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
    JWT_SECRET=your_secret_key
+   PORT=3001
    ```
+   This .env file is already included in the repository.
    
 4. Start the server:
    ```bash
@@ -36,7 +38,7 @@ https://docs.google.com/document/d/1V2sQEH0qCQt1l59_vDzWt1inwqAcjk4ZrZDPBVrHl4U/
 ### **Frontend**
 1. Navigate to the frontend directory:
    ```bash
-   cd pet-health-hub/src
+   cd pet-health-hub
    ```
 
 2. Install dependencies:
@@ -75,19 +77,15 @@ https://docs.google.com/document/d/1V2sQEH0qCQt1l59_vDzWt1inwqAcjk4ZrZDPBVrHl4U/
   ```bash
   npm install dotenv
   ```
+- **CORS** for cross-origin requests:
+  ```bash
+  npm install cors
+  ```
 
 ### **Frontend Dependencies**
 - **React Router DOM** for routing:
   ```bash
   npm install react-router-dom
-  ```
-- **Bootstrap** for styling:
-  ```bash
-  npm install bootstrap
-  ```
-- **Axios** for API calls (optional if fetch API is used):
-  ```bash
-  npm install axios
   ```
 
 ---
@@ -102,6 +100,7 @@ The application uses MongoDB to store user and pet data. Below are the schemas u
 {
   "email": "string (unique, required)",
   "password": "string (hashed, required)",
+  "username": "String (optinal)",
   "createdAt": "Date (default: Date.now)"
 }
 ```
@@ -124,9 +123,15 @@ You can use the following sample data for initial testing:
 #### **User**
 ```json
 {
-  "email": "testuser@example.com",
-  "password": "hashed-password"
+  "email": "testuser1@example.com",
+  "password": "password111"
 }
+
+{
+  "email": "testuser2@example.com",
+  "password": "password222"
+}
+
 ```
 
 #### **Pet**
@@ -134,24 +139,11 @@ You can use the following sample data for initial testing:
 {
   "name": "Buddy",
   "breed": "Golden Retriever",
-  "age": 5,
-  "weight": 30,
+  "age": 3,
+  "weight": 10,
   "owner": "ObjectId (corresponding to user)"
 }
 ```
-
----
-
-## **4. Sample Environment Variables**
-
-Create a `.env` file in the root of the **backend** directory with the following content:
-
-```plaintext
-MONGO_URI=mongodb+srv://cs5610final:cs5610final@cluster0.ojfdl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-JWT_SECRET=your_secret_key
-```
-
-Replace `<username>`, `<password>`, and `<database>` with your MongoDB credentials.
 
 ---
 

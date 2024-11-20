@@ -12,7 +12,7 @@ const HomePage = () => {
   return (
     <div className="homepage">
       <Header />
-      <WelcomeBanner isLoggedIn={!!user} userName={user?.name || ''} />
+      <WelcomeBanner isLoggedIn={!!user} userName={user?.username || ''} />
       <FeaturePreview isLoggedIn={!!user} />
       <Footer />
     </div>
