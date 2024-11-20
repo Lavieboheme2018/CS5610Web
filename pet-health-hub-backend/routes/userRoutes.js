@@ -18,7 +18,7 @@ router.get('/profile', auth, async (req, res) => {
 
 // Update user profile (Protected route)
 router.put('/profile', auth, async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, username } = req.body;
   try {
     let user = await User.findById(req.user.id);
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -26,9 +26,10 @@ router.put('/profile', auth, async (req, res) => {
     // Update fields if provided
     if (email) user.email = email;
     if (password) user.password = await bcrypt.hash(password, 10); // Hash new password if updated
+    if (username) user.username = username; // Update username if provided
 
     await user.save();
-    res.json({ message: "Profile updated successfully" });
+    res.json({ message: "Profile updated successfully", user });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

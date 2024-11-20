@@ -159,11 +159,8 @@ const ProfilePage = () => {
   const handleUpdateProfile = async (field) => {
     const token = localStorage.getItem('token');
     try {
-      const body =
-        field === 'email'
-          ? { email: updatedValue }
-          : { password: updatedValue };
-
+      const body = { [field]: updatedValue }; // Dynamically set the field being updated
+  
       const response = await fetch('http://localhost:3001/api/users/profile', {
         method: 'PUT',
         headers: {
@@ -172,14 +169,13 @@ const ProfilePage = () => {
         },
         body: JSON.stringify(body),
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to update profile');
       }
-
-      if (field === 'email') {
-        setUser((prevUser) => ({ ...prevUser, email: updatedValue }));
-      }
+  
+      const updatedUser = await response.json(); // Optionally use this to update the frontend state
+      setUser((prevUser) => ({ ...prevUser, [field]: updatedValue }));
       setEditingField(null);
       alert(`${field.charAt(0).toUpperCase() + field.slice(1)} updated successfully!`);
     } catch (error) {
@@ -203,6 +199,30 @@ const ProfilePage = () => {
               <div className="avatar-placeholder"></div>
             </div>
             <div className="user-info">
+            <p>
+                <strong>Username:</strong> {user.username}
+                <button onClick={() => setEditingField('username')}>Edit</button>
+              </p>
+              {editingField === 'username' && (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleUpdateProfile('username');
+                  }}
+                >
+                  <input
+                    type="username"
+                    value={updatedValue}
+                    onChange={(e) => setUpdatedValue(e.target.value)}
+                    placeholder="Enter new username"
+                    required
+                  />
+                  <button type="submit">Save</button>
+                  <button type="button" onClick={() => setEditingField(null)}>
+                    Cancel
+                  </button>
+                </form>
+              )}
               <p>
                 <strong>Email:</strong> {user.email}
                 <button onClick={() => setEditingField('email')}>Edit</button>
