@@ -96,6 +96,10 @@ https://youtu.be/EEiAfHAMnSM
   ```bash
   npm install gridfs-stream
   ```
+- **Recharts** for building graph:
+  ```bash
+  npm install recharts
+  ```
 
 ### **Frontend Dependencies**
 - **React Router DOM** for routing:
@@ -208,7 +212,6 @@ This platform offers:
 
 - **Pet Profile Creation:** Create individual profiles for each pet with essential details like breed, age, weight, and health conditions.
 - **Health Record Management:** Store and manage health data such as vaccinations, medications, and vet visits in a user-friendly timeline.
-- **Appointment and Medication Reminders:** Set reminders to ensure timely care for each pet.
 - **Data Visualization:** Visualize health trends (e.g., weight changes) through charts for better monitoring.
 - **Multi-Pet Management:** Manage multiple pets within a single account.
 - **Vet Information Integration:** Store and manage veterinarian details, including contact information and visit history.

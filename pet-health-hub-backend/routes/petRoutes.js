@@ -6,6 +6,7 @@ const multer = require('multer');
 const { getBucket } = require('../db');
 const { ObjectId } = require('mongodb');
 const stream = require('stream');
+const mongoose = require('mongoose');
 
 // Configure multer for memory storage
 const upload = multer({
@@ -41,31 +42,6 @@ router.get('/user', auth, async (req, res) => {
     res.json(pets);
   } catch (error) {
     console.error('Error fetching pets:', error);
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Get pet details by ID
-router.get('/:id', auth, async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const pet = await Pet.findOne({ _id: id, owner: req.user.id });
-
-    if (!pet) {
-      return res.status(404).json({ message: 'Pet not found' });
-    }
-
-    const latestWeight = pet.weightTrend.length
-      ? pet.weightTrend[pet.weightTrend.length - 1]
-      : null;
-
-    res.json({
-      ...pet.toObject(),
-      latestWeight,
-    });
-  } catch (error) {
-    console.error('Error fetching pet details:', error);
     res.status(500).json({ message: error.message });
   }
 });
@@ -118,6 +94,42 @@ router.delete('/:id', auth, async (req, res) => {
     res.json({ message: 'Pet deleted successfully' });
   } catch (error) {
     console.error('Error deleting pet:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Search pets by name and/or breed
+router.get('/search', auth, async (req, res) => {
+  const { name, breed } = req.query;
+  try {
+    const query = { owner: req.user.id };
+    if (name) query.name = { $regex: name, $options: 'i' };
+    if (breed) query.breed = { $regex: breed, $options: 'i' };
+
+    const pets = await Pet.find(query);
+    res.json(pets);
+  } catch (error) {
+    console.error('Error searching pets:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Dynamic pet route
+router.get('/:id', auth, async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Invalid pet ID' });
+  }
+
+  try {
+    const pet = await Pet.findOne({ _id: id, owner: req.user.id });
+    if (!pet) {
+      return res.status(404).json({ message: 'Pet not found' });
+    }
+    res.json(pet);
+  } catch (error) {
+    console.error('Error fetching pet details:', error);
     res.status(500).json({ message: error.message });
   }
 });
@@ -266,22 +278,6 @@ router.post('/:id/vaccination', auth, async (req, res) => {
     res.json(pet);
   } catch (error) {
     console.error('Error adding vaccination record:', error);
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Search pets
-router.get('/search', auth, async (req, res) => {
-  const { name, breed } = req.query;
-  try {
-    const query = { owner: req.user.id };
-    if (name) query.name = { $regex: name, $options: 'i' };
-    if (breed) query.breed = { $regex: breed, $options: 'i' };
-
-    const pets = await Pet.find(query);
-    res.json(pets);
-  } catch (error) {
-    console.error('Error searching pets:', error);
     res.status(500).json({ message: error.message });
   }
 });
