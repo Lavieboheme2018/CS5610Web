@@ -28,7 +28,7 @@ https://youtu.be/EEiAfHAMnSM
    JWT_SECRET=your_secret_key
    PORT=3001
    ```
-   This .env file is already included in the repository.
+   (Note: This .env file is already included in the repository.)
    
 4. Start the server:
    ```bash
@@ -84,6 +84,18 @@ https://youtu.be/EEiAfHAMnSM
   ```bash
   npm install cors
   ```
+- **Multer** for handling file uploads:
+  ```bash
+  npm install multer
+  ```
+- **Multer-GridFS-Storage** for Multer storage engine to work with MongoDB GridFSuploads:
+  ```bash
+  npm install multer-gridfs-storage
+  ```
+- **GridFS-Stream** for working with MongoDB GridFS:
+  ```bash
+  npm install gridfs-stream
+  ```
 
 ### **Frontend Dependencies**
 - **React Router DOM** for routing:
@@ -101,10 +113,14 @@ The application uses MongoDB to store user and pet data. Below are the schemas u
 #### **User Schema**
 ```json
 {
-  "email": "string (unique, required)",
-  "password": "string (hashed, required)",
-  "username": "String (optinal)",
-  "createdAt": "Date (default: Date.now)"
+  "email": "string (required, unique)",
+  "password": "string (required)",
+  "username": "string (optional)",
+  "profileImage": {
+    "fileId": "ObjectId (optional)",
+    "filename": "string (optional)"
+  },
+  "createdAt": "date (default: Date.now)"
 }
 ```
 
@@ -112,11 +128,27 @@ The application uses MongoDB to store user and pet data. Below are the schemas u
 ```json
 {
   "name": "string (required)",
-  "breed": "string (required)",
   "age": "number (required)",
-  "weight": "number (required)",
-  "owner": "ObjectId (referencing User, required)",
-  "createdAt": "Date (default: Date.now)"
+  "breed": "string (required)",
+  "owner": "ObjectId (reference to User, required)",
+  "profileImage": {
+    "filename": "string (optional)",
+    "contentType": "string (optional)",
+    "uploadDate": "date (optional)"
+  },
+  "weightTrend": [
+    {
+      "date": "date (required)",
+      "weight": "number (required)"
+    }
+  ],
+  "vaccinationHistory": [
+    {
+      "vaccine": "string (required)",
+      "date": "date (required)"
+    }
+  ],
+  "createdAt": "date (default: Date.now)"
 }
 ```
 
