@@ -19,12 +19,17 @@ router.post('/register', async (req, res) => {
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = new User({ email, password: hashedPassword });
+    const newUser = new User({ 
+      email, 
+      password: hashedPassword,
+      profileImage: { fileId: null, filename: null }
+    });
+    
     await newUser.save();
     const token = generateToken(newUser);
     res.status(201).json({ token });
   } catch (error) {
+    console.error('Registration error:', error);
     res.status(500).json({ message: error.message });
   }
 });
@@ -38,12 +43,12 @@ router.post('/login', async (req, res) => {
 
     // Use bcrypt.compare to check the plain-text password against the stored hash
     const isMatch = await bcrypt.compare(password, user.password);
-
     if (!isMatch) return res.status(400).json({ message: "Invalid email or password" });
 
     const token = generateToken(user);
     res.json({ token });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({ message: error.message });
   }
 });
