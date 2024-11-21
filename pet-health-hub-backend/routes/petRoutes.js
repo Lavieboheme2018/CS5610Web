@@ -286,4 +286,118 @@ router.get('/search', auth, async (req, res) => {
   }
 });
 
+// Update weight record
+router.put('/:petId/weight/:recordId', auth, async (req, res) => {
+  const { petId, recordId } = req.params;
+  const { weight, date } = req.body;
+
+  try {
+    const pet = await Pet.findOneAndUpdate(
+      { 
+        _id: petId, 
+        owner: req.user.id,
+        'weightTrend._id': recordId 
+      },
+      { 
+        $set: { 
+          'weightTrend.$': {
+            _id: recordId,
+            weight,
+            date: new Date(date)
+          }
+        }
+      },
+      { new: true }
+    );
+
+    if (!pet) {
+      return res.status(404).json({ message: 'Record not found' });
+    }
+
+    res.json(pet);
+  } catch (error) {
+    console.error('Error updating weight record:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Update vaccination record
+router.put('/:petId/vaccination/:recordId', auth, async (req, res) => {
+  const { petId, recordId } = req.params;
+  const { vaccine, date } = req.body;
+
+  try {
+    const pet = await Pet.findOneAndUpdate(
+      { 
+        _id: petId, 
+        owner: req.user.id,
+        'vaccinationHistory._id': recordId 
+      },
+      { 
+        $set: { 
+          'vaccinationHistory.$': {
+            _id: recordId,
+            vaccine,
+            date: new Date(date)
+          }
+        }
+      },
+      { new: true }
+    );
+
+    if (!pet) {
+      return res.status(404).json({ message: 'Record not found' });
+    }
+
+    res.json(pet);
+  } catch (error) {
+    console.error('Error updating vaccination record:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Delete weight record
+router.delete('/:petId/weight/:recordId', auth, async (req, res) => {
+  const { petId, recordId } = req.params;
+
+  try {
+    const pet = await Pet.findOneAndUpdate(
+      { _id: petId, owner: req.user.id },
+      { $pull: { weightTrend: { _id: recordId } } },
+      { new: true }
+    );
+
+    if (!pet) {
+      return res.status(404).json({ message: 'Record not found' });
+    }
+
+    res.json(pet);
+  } catch (error) {
+    console.error('Error deleting weight record:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Delete vaccination record
+router.delete('/:petId/vaccination/:recordId', auth, async (req, res) => {
+  const { petId, recordId } = req.params;
+
+  try {
+    const pet = await Pet.findOneAndUpdate(
+      { _id: petId, owner: req.user.id },
+      { $pull: { vaccinationHistory: { _id: recordId } } },
+      { new: true }
+    );
+
+    if (!pet) {
+      return res.status(404).json({ message: 'Record not found' });
+    }
+
+    res.json(pet);
+  } catch (error) {
+    console.error('Error deleting vaccination record:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

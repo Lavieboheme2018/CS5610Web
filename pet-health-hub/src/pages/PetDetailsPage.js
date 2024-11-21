@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/PetDetailsPage.css";
@@ -14,6 +15,10 @@ const PetDetailsPage = () => {
   const [editedPet, setEditedPet] = useState(null);
   const [newWeight, setNewWeight] = useState("");
   const [newVaccine, setNewVaccine] = useState({ vaccine: "", date: "" });
+  const [editingWeightId, setEditingWeightId] = useState(null);
+  const [editingVaccId, setEditingVaccId] = useState(null);
+  const [editingWeight, setEditingWeight] = useState({ weight: "", date: "" });
+  const [editingVacc, setEditingVacc] = useState({ vaccine: "", date: "" });
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -158,7 +163,7 @@ const PetDetailsPage = () => {
   const handleAddWeight = async (e) => {
     e.preventDefault();
     if (!newWeight) return;
-
+  
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(`http://localhost:3001/api/pets/${petId}/weight`, {
@@ -167,13 +172,13 @@ const PetDetailsPage = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ weight: parseFloat(newWeight) })
+        body: JSON.stringify({ weight: parseFloat(newWeight), date: new Date().toISOString() })
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to add weight record');
       }
-
+  
       const updatedPet = await response.json();
       setPet(updatedPet);
       setNewWeight("");
@@ -187,7 +192,7 @@ const PetDetailsPage = () => {
   const handleAddVaccination = async (e) => {
     e.preventDefault();
     if (!newVaccine.vaccine || !newVaccine.date) return;
-
+  
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(`http://localhost:3001/api/pets/${petId}/vaccination`, {
@@ -196,13 +201,13 @@ const PetDetailsPage = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(newVaccine)
+        body: JSON.stringify({ vaccine: newVaccine.vaccine, date: new Date(newVaccine.date).toISOString() })
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to add vaccination record');
       }
-
+  
       const updatedPet = await response.json();
       setPet(updatedPet);
       setNewVaccine({ vaccine: "", date: "" });
@@ -210,6 +215,143 @@ const PetDetailsPage = () => {
     } catch (error) {
       console.error('Error adding vaccination record:', error);
       alert('Failed to add vaccination record');
+    }
+  };
+
+  const formatWeightData = (weightTrend) => {
+    return [...weightTrend]
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
+      .map(record => ({
+        date: new Date(record.date).toISOString().slice(0, 10),
+        weight: record.weight
+      }));
+  };
+
+  const handleUpdateWeight = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/pets/${petId}/weight/${editingWeightId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            weight: editingWeight.weight,
+            date: new Date(editingWeight.date).toISOString()
+          })
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error('Failed to update weight record');
+      }
+  
+      const updatedPet = await response.json();
+      setPet(updatedPet);
+      setEditingWeightId(null);
+      setEditingWeight({ weight: "", date: "" });
+    } catch (error) {
+      console.error('Error updating weight record:', error);
+      alert('Failed to update weight record');
+    }
+  };
+  
+  const handleUpdateVaccination = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/pets/${petId}/vaccination/${editingVaccId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            vaccine: editingVacc.vaccine,
+            date: new Date(editingVacc.date).toISOString()
+          })
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error('Failed to update vaccination record');
+      }
+  
+      const updatedPet = await response.json();
+      setPet(updatedPet);
+      setEditingVaccId(null);
+      setEditingVacc({ vaccine: "", date: "" });
+    } catch (error) {
+      console.error('Error updating vaccination record:', error);
+      alert('Failed to update vaccination record');
+    }
+  };
+
+  const handleDeleteWeight = async (weightId) => {
+    if (!window.confirm('Are you sure you want to delete this weight record?')) {
+      return;
+    }
+    
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/pets/${petId}/weight/${weightId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          }
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete weight record');
+      }
+  
+      const updatedPet = await response.json();
+      setPet(updatedPet);
+      setEditingWeightId(null);
+      setEditingWeight({ weight: "", date: "" });
+    } catch (error) {
+      console.error('Error deleting weight record:', error);
+      alert('Failed to delete weight record');
+    }
+  };
+  
+  const handleDeleteVaccination = async (vaccId) => {
+    if (!window.confirm('Are you sure you want to delete this vaccination record?')) {
+      return;
+    }
+  
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/pets/${petId}/vaccination/${vaccId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          }
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete vaccination record');
+      }
+  
+      const updatedPet = await response.json();
+      setPet(updatedPet);
+      setEditingVaccId(null);
+      setEditingVacc({ vaccine: "", date: "" });
+    } catch (error) {
+      console.error('Error deleting vaccination record:', error);
+      alert('Failed to delete vaccination record');
     }
   };
 
@@ -250,7 +392,7 @@ const PetDetailsPage = () => {
             )}
             {isUploading && <div className="loading-spinner" />}
           </div>
-
+  
           <div className="pet-info">
             {isEditing ? (
               <div className="edit-form">
@@ -289,7 +431,7 @@ const PetDetailsPage = () => {
             )}
           </div>
         </section>
-
+  
         <div className="pet-records">
           {/* Weight History Section */}
           <section className="weight-section">
@@ -303,24 +445,89 @@ const PetDetailsPage = () => {
                 placeholder="Enter weight (kg)"
                 required
               />
-              <button type="submit">Add Weight Record</button>
+              <button type="submit">Add Weight</button>
             </form>
-            <div className="records-list">
-              {pet.weightTrend && pet.weightTrend.length > 0 ? (
-                pet.weightTrend.map((weight, index) => (
-                  <div key={index} className="record-item">
-                    <span className="record-date">
-                      {new Date(weight.date).toLocaleDateString()}
-                    </span>
-                    <span className="record-value">{weight.weight} kg</span>
-                  </div>
-                ))
-              ) : (
-                <p className="no-records">No weight records available</p>
-              )}
-            </div>
+            {pet.weightTrend && pet.weightTrend.length > 0 ? (
+              <>
+                <div className="weight-chart">
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={formatWeightData(pet.weightTrend)} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis domain={['auto', 'auto']} />
+                      <Tooltip />
+                      <Line type="monotone" dataKey="weight" stroke="#007bff" strokeWidth={2} dot={{ r: 4 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="records-list">
+                  {pet.weightTrend.sort((a, b) => new Date(a.date) - new Date(b.date)).map((weight) => (
+                    <div key={weight._id} className="record-item">
+                      {editingWeightId === weight._id ? (
+                        <form onSubmit={handleUpdateWeight} className="edit-record-form">
+                          <input
+                            type="number"
+                            step="0.1"
+                            value={editingWeight.weight}
+                            onChange={(e) => setEditingWeight({
+                              ...editingWeight,
+                              weight: e.target.value
+                            })}
+                            required
+                          />
+                          <input
+                            type="date"
+                            value={editingWeight.date}
+                            onChange={(e) => setEditingWeight({
+                              ...editingWeight,
+                              date: e.target.value
+                            })}
+                            required
+                          />
+                          <div className="edit-actions">
+                            <button type="submit">Save</button>
+                            <button 
+                              type="button" 
+                              className="delete-button"
+                              onClick={() => handleDeleteWeight(weight._id)}
+                            >
+                              Delete
+                            </button>
+                            <button type="button" onClick={() => {
+                              setEditingWeightId(null);
+                              setEditingWeight({ weight: "", date: "" });
+                            }}>Cancel</button>
+                          </div>
+                        </form>
+                      ) : (
+                        <>
+                          <span className="record-date">
+                            {new Date(weight.date).toISOString().slice(0, 10)}
+                          </span>
+                          <span className="record-value">{weight.weight} kg</span>
+                          <button
+                            className="edit-button"
+                            onClick={() => {
+                              setEditingWeightId(weight._id);
+                              setEditingWeight({
+                                weight: weight.weight,
+                                date: new Date(weight.date).toISOString().split('T')[0]
+                              });
+                            }}
+                          >
+                            Edit
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <p className="no-records">No weight records available</p>
+            )}
           </section>
-
+  
           {/* Vaccination History Section */}
           <section className="vaccination-section">
             <h2>Vaccination Records</h2>
@@ -338,16 +545,67 @@ const PetDetailsPage = () => {
                 onChange={(e) => setNewVaccine({...newVaccine, date: e.target.value})}
                 required
               />
-              <button type="submit">Add Vaccination Record</button>
+              <button type="submit">Add Vaccination</button>
             </form>
             <div className="records-list">
               {pet.vaccinationHistory && pet.vaccinationHistory.length > 0 ? (
-                pet.vaccinationHistory.map((vacc, index) => (
-                  <div key={index} className="record-item">
-                    <span className="record-name">{vacc.vaccine}</span>
-                    <span className="record-date">
-                      {new Date(vacc.date).toLocaleDateString()}
-                    </span>
+                pet.vaccinationHistory.sort((a, b) => new Date(a.date) - new Date(b.date)).map((vacc) => (
+                  <div key={vacc._id} className="record-item">
+                    {editingVaccId === vacc._id ? (
+                      <form onSubmit={handleUpdateVaccination} className="edit-record-form">
+                        <input
+                          type="text"
+                          value={editingVacc.vaccine}
+                          onChange={(e) => setEditingVacc({
+                            ...editingVacc,
+                            vaccine: e.target.value
+                          })}
+                          required
+                        />
+                        <input
+                          type="date"
+                          value={editingVacc.date}
+                          onChange={(e) => setEditingVacc({
+                            ...editingVacc,
+                            date: e.target.value
+                          })}
+                          required
+                        />
+                        <div className="edit-actions">
+                          <button type="submit">Save</button>
+                          <button 
+                            type="button" 
+                            className="delete-button"
+                            onClick={() => handleDeleteVaccination(vacc._id)}
+                          >
+                            Delete
+                          </button>
+                          <button type="button" onClick={() => {
+                            setEditingVaccId(null);
+                            setEditingVacc({ vaccine: "", date: "" });
+                          }}>Cancel</button>
+                        </div>
+                      </form>
+                    ) : (
+                      <div className="vaccination-record">
+                        <span className="record-date">
+                          {new Date(vacc.date).toISOString().slice(0, 10)}
+                        </span>
+                        <span className="record-name">{vacc.vaccine}</span>
+                        <button
+                          className="edit-button"
+                          onClick={() => {
+                            setEditingVaccId(vacc._id);
+                            setEditingVacc({
+                              vaccine: vacc.vaccine,
+                              date: new Date(vacc.date).toISOString().split('T')[0]
+                            });
+                          }}
+                        >
+                          Edit
+                        </button>
+                      </div>
+                    )}
                   </div>
                 ))
               ) : (
@@ -360,6 +618,6 @@ const PetDetailsPage = () => {
       <Footer />
     </div>
   );
-};
+}
 
 export default PetDetailsPage;
