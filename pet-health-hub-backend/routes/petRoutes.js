@@ -5,13 +5,12 @@ const auth = require('../middleware/auth');
 
 // Create a new pet (Protected route)
 router.post('/create', auth, async (req, res) => {
-  const { name, age, breed, weight } = req.body;
+  const { name, age, breed } = req.body;
   try {
     const newPet = new Pet({
       name,
       age,
       breed,
-      weight,
       owner: req.user.id, // Bind pet to the logged-in user
     });
     await newPet.save();
@@ -34,12 +33,12 @@ router.get('/user', auth, async (req, res) => {
 // Update a pet's information (Protected route)
 router.put('/:id', auth, async (req, res) => {
   const { id } = req.params;
-  const { name, age, breed, weight } = req.body;
+  const { name, age, breed } = req.body;
 
   try {
     const updatedPet = await Pet.findOneAndUpdate(
       { _id: id, owner: req.user.id }, // Ensure only the owner can update
-      { name, age, breed, weight },
+      { name, age, breed },
       { new: true } // Return the updated document
     );
 
@@ -83,6 +82,82 @@ router.get('/search', auth, async (req, res) => {
 
     const pets = await Pet.find(query);
     res.json(pets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Add weight entry (Protected route)
+router.post('/:id/weight', auth, async (req, res) => {
+  const { id } = req.params;
+  const { weight } = req.body; // Only weight is required
+
+  try {
+    const pet = await Pet.findOneAndUpdate(
+      { _id: id, owner: req.user.id },
+      {
+        $push: {
+          weightTrend: {
+            date: new Date(), // Automatically add current date
+            weight,
+          },
+        },
+      },
+      { new: true } // Return the updated document
+    );
+
+    if (!pet) {
+      return res.status(404).json({ message: 'Pet not found' });
+    }
+
+    res.json(pet);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Add vaccination record (Protected route)
+router.post('/:id/vaccination', auth, async (req, res) => {
+  const { id } = req.params;
+  const { vaccine, date } = req.body;
+
+  try {
+    const pet = await Pet.findOneAndUpdate(
+      { _id: id, owner: req.user.id }, // Ensure only the owner can update
+      { $push: { vaccinationHistory: { vaccine, date } } },
+      { new: true } // Return the updated document
+    );
+
+    if (!pet) {
+      return res.status(404).json({ message: 'Pet not found' });
+    }
+
+    res.json(pet);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Get pet details by ID (Protected route)
+router.get('/:id', auth, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const pet = await Pet.findOne({ _id: id, owner: req.user.id });
+
+    if (!pet) {
+      return res.status(404).json({ message: 'Pet not found' });
+    }
+
+    // Add the latest weight dynamically from weightTrend
+    const latestWeight = pet.weightTrend.length
+      ? pet.weightTrend[pet.weightTrend.length - 1]
+      : null;
+
+    res.json({
+      ...pet.toObject(),
+      latestWeight, // Include latest weight in the response
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
