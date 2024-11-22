@@ -1,20 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/Footer.css';
 
 function Footer() {
   return (
     <footer className="footer">
-      <div className="logo">Logo</div>
+      <div className="logo">Critter<span>Care</span></div>
       <nav>
-        <a href="/home">Home</a>
-        <a href="/about">About</a>
-        <a href="/resources">Resources</a>
+        <Link to="/">Home</Link> 
+        <Link to="/about">About</Link>
       </nav>
-      <div className="social-media">
-        <a href="#">FB</a>
-        <a href="#">LI</a>
-        <a href="#">IG</a>
-      </div>
     </footer>
   );
 }

@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
 import SearchPage from './pages/SearchPage';
 import PetDetailsPage from './pages/PetDetailsPage';
+import AboutPage from './pages/AboutPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/details/:petId" element={<PetDetailsPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </Router>
   );

@@ -9,8 +9,17 @@
   }
   
   .logo {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: bold;
+    color: #007bff;
+    cursor: pointer;
+    font-family: 'Trebuchet MS', sans-serif;
+  }
+  
+  .logo span {
+    color: #28a745;
+    font-style: italic;
+    font-family: 'Arial', serif;
   }
   
   nav a {

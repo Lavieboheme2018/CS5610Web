@@ -312,7 +312,7 @@ const ProfilePage = () => {
                   onChange={handlePetInputChange}
                   required
                   min="0"
-                  step="0.1"
+                  step="1"
                 />
               </div>
 

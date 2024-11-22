@@ -15,10 +15,9 @@ function Header() {
 
   return (
     <header className="header">
-      <div className="logo" onClick={() => navigate('/')}>Logo</div>
+      <div className="logo" onClick={() => navigate('/')}>Critter<span>Care</span></div>
       <nav>
         <button onClick={() => navigate('/')}>Home</button>
-        <button onClick={() => navigate('/about')}>About</button>
         <button onClick={() => navigate('/resources')}>Resources</button>
         <button onClick={() => navigate('/search')}>Search</button>
         {user ? (
