@@ -9,7 +9,8 @@ const SearchPage = () => {
   const [results, setResults] = useState([]);
   const [petImages, setPetImages] = useState({});
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // Initialize the navigate function
+  const [isSearchTriggered, setIsSearchTriggered] = useState(false); // Track search initiation
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,6 +22,7 @@ const SearchPage = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    setIsSearchTriggered(true); // Mark search as initiated
     const token = localStorage.getItem('token');
     if (!token) {
       alert('Please log in to search.');
@@ -44,7 +46,7 @@ const SearchPage = () => {
       setResults(data);
 
       // Fetch images for pets with profile images
-      data.forEach(pet => {
+      data.forEach((pet) => {
         if (pet.profileImage?.filename) {
           fetchPetImage(pet._id, pet.profileImage.filename);
         }
@@ -58,7 +60,7 @@ const SearchPage = () => {
   };
 
   const fetchPetImage = async (petId, filename) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     try {
       const response = await fetch(
         `http://localhost:3001/api/pets/image/${filename}`,
@@ -71,9 +73,9 @@ const SearchPage = () => {
       if (response.ok) {
         const blob = await response.blob();
         const imageUrl = URL.createObjectURL(blob);
-        setPetImages(prev => ({
+        setPetImages((prev) => ({
           ...prev,
-          [petId]: imageUrl
+          [petId]: imageUrl,
         }));
       }
     } catch (error) {
@@ -81,15 +83,12 @@ const SearchPage = () => {
     }
   };
 
-  const renderPetCards = () => (
-    results.map(pet => (
+  const renderPetCards = () =>
+    results.map((pet) => (
       <div key={pet._id} className="pet-card">
         <div className="pet-avatar">
           {petImages[pet._id] ? (
-            <img 
-              src={petImages[pet._id]}
-              alt={pet.name}
-            />
+            <img src={petImages[pet._id]} alt={pet.name} />
           ) : (
             <div className="pet-avatar-placeholder">
               {pet.name ? pet.name[0].toUpperCase() : 'P'}
@@ -97,17 +96,20 @@ const SearchPage = () => {
           )}
         </div>
         <h3>{pet.name}</h3>
-        <p><strong>Breed:</strong> {pet.breed}</p>
-        <p><strong>Age:</strong> {pet.age} years</p>
+        <p>
+          <strong>Breed:</strong> {pet.breed}
+        </p>
+        <p>
+          <strong>Age:</strong> {pet.age} years
+        </p>
         <button onClick={() => navigate(`/details/${pet._id}`)}>View Details</button>
       </div>
-    ))
-  );
+    ));
 
   return (
     <div className="search-page">
       <Header />
-      <div className="search-container">
+      <div className="content-wrapper">
         <h1>Search for Your Pets!</h1>
         <form onSubmit={handleSearch} className="search-form">
           <input
@@ -131,7 +133,9 @@ const SearchPage = () => {
           <p>Loading...</p>
         ) : (
           <div className="results-container">
-            {results.length > 0 ? renderPetCards() : <p>No results found</p>}
+            {isSearchTriggered && ( // Display results only after search is triggered
+              results.length > 0 ? renderPetCards() : <p>No results found</p>
+            )}
           </div>
         )}
       </div>

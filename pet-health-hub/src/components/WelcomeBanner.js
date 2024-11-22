@@ -14,19 +14,16 @@ function WelcomeBanner({ isLoggedIn, userName }) {
   return (
     <div className="welcome-banner">
       <div className="welcome-text">
-        <h1>All Your Pet's Health Record, <br /> in One Place</h1>
+        <h1>All Your Pet's Health Record,</h1>
+        <h1> in One Place</h1>
         <button onClick={handleButtonClick}>
           {isLoggedIn ? `Welcome, ${userName}!` : 'Get Started!'}
         </button>
       </div>
-      <div className="welcome-image">
+      <div className="welcome-images">
         <div className="image-container">
-          <div className="main-image">
-            <p>Screenshot of website here</p>
-          </div>
-          <div className="overlay-image">
-            <p>Screenshot of website here</p>
-          </div>
+          <img src="/example.png" alt="Main example" className="main-image" />
+          <img src="/example_pet.png" alt="Pet example" className="overlay-image" />
         </div>
       </div>
     </div>

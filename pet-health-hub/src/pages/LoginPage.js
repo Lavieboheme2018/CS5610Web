@@ -61,9 +61,13 @@ const LoginPage = () => {
     <div className="login-page">
       <Header />
       <div className="login-container">
-        <div className="login-image">
-          <div className="placeholder">Picture of dog / cat here</div>
-        </div>
+      <div className="login-image">
+        <img 
+          src="/pet-group.jpg" 
+          alt="Group of pets including rabbit, cat, dog, ferret, and parrot"
+          className="pets-image"
+        />
+      </div>
         <div className="login-form-container">
           <div className="login-header">
             <h1>Welcome!</h1>

@@ -4,7 +4,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
 import SearchPage from './pages/SearchPage';
-import PetDetailsPage from "./pages/PetDetailsPage";
+import PetDetailsPage from './pages/PetDetailsPage';
 
 function App() {
   return (
