@@ -9,13 +9,33 @@ const LoginPage = () => {
   const [activeTab, setActiveTab] = useState('login'); // "login" or "signup"
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleTabSwitch = (tab) => setActiveTab(tab);
+  const handleTabSwitch = (tab) => {
+    setActiveTab(tab);
+    setErrors({});
+    setEmail('');
+    setPassword('');
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      newErrors.email = 'Please enter a valid email address.';
+    }
+    if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters.';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     try {
       const response = await fetch('http://localhost:3001/api/auth/login', {
         method: 'POST',
@@ -41,6 +61,8 @@ const LoginPage = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     try {
       const response = await fetch('http://localhost:3001/api/auth/register', {
         method: 'POST',
@@ -61,13 +83,13 @@ const LoginPage = () => {
     <div className="login-page">
       <Header />
       <div className="login-container">
-      <div className="login-image">
-        <img 
-          src="/pet-group.jpg" 
-          alt="Group of pets including rabbit, cat, dog, ferret, and parrot"
-          className="pets-image"
-        />
-      </div>
+        <div className="login-image">
+          <img
+            src="/pet-group.jpg"
+            alt="Group of pets including rabbit, cat, dog, ferret, and parrot"
+            className="pets-image"
+          />
+        </div>
         <div className="login-form-container">
           <div className="login-header">
             <h1>Welcome!</h1>
@@ -97,6 +119,7 @@ const LoginPage = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
+                {errors.email && <p className="error">{errors.email}</p>}
               </div>
               <div className="form-group">
                 <input
@@ -106,8 +129,11 @@ const LoginPage = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                {errors.password && <p className="error">{errors.password}</p>}
               </div>
-              <button type="submit" className="login-button">Log In</button>
+              <button type="submit" className="login-button">
+                Log In
+              </button>
             </form>
           ) : (
             <form className="signup-form" onSubmit={handleSignup}>
@@ -119,6 +145,7 @@ const LoginPage = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
+                {errors.email && <p className="error">{errors.email}</p>}
               </div>
               <div className="form-group">
                 <input
@@ -128,8 +155,11 @@ const LoginPage = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                {errors.password && <p className="error">{errors.password}</p>}
               </div>
-              <button type="submit" className="login-button">Sign Up</button>
+              <button type="submit" className="login-button">
+                Sign Up
+              </button>
             </form>
           )}
         </div>
