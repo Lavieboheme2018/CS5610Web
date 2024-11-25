@@ -10,7 +10,11 @@ html, body {
 .about-page-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ensure the wrapper takes full viewport height */
+  min-height: 100vh; /* Ensure height adapts to viewport */
+  margin: 0 auto;
+  max-width: 1200px; /* Restrict maximum width */
+  padding: 0 20px; /* Add padding for better spacing */
+  box-sizing: border-box;
 }
 
 /* Content section that grows to fill available space */
@@ -49,3 +53,5 @@ html, body {
   padding: 20px;
   text-align: center;
 }
+
+

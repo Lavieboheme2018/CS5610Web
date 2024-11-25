@@ -200,10 +200,9 @@
 
 /* This is the key change */
 .pet-avatar img {
-  width: 120px;
-  height: 120px;
+  max-width: 100%;
+  height: auto; /* Ensure image scales correctly */
   object-fit: cover;
-  border-radius: 50%;
 }
 
 .pet-avatar-placeholder {

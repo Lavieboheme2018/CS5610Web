@@ -39,9 +39,8 @@
 }
 
 .pet-avatar img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
+  max-width: 100%;
+  height: auto; /* Ensure image scales correctly */
   object-fit: cover;
 }
 
@@ -82,3 +81,4 @@
 .pet-card button:hover {
   background-color: #0056b3;
 }
+
