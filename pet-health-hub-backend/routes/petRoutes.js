@@ -1,12 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const Pet = require('../models/Pet');
+const axios = require('axios');
 const auth = require('../middleware/auth');
 const multer = require('multer');
 const { getBucket } = require('../db');
 const { ObjectId } = require('mongodb');
 const stream = require('stream');
 const mongoose = require('mongoose');
+
+// Fetch breeds from Dog and Cat APIs
+router.get('/breeds', auth, async (req, res) => {
+  try {
+    const dogBreedsResponse = await axios.get('https://api.thedogapi.com/v1/breeds', {
+      headers: { 'x-api-key': process.env.DOG_API_KEY },
+    });
+
+    const catBreedsResponse = await axios.get('https://api.thecatapi.com/v1/breeds', {
+      headers: { 'x-api-key': process.env.CAT_API_KEY },
+    });
+
+    const dogBreeds = dogBreedsResponse.data.map(breed => ({ id: breed.id, name: breed.name, type: 'dog' }));
+    const catBreeds = catBreedsResponse.data.map(breed => ({ id: breed.id, name: breed.name, type: 'cat' }));
+
+    const allBreeds = [...dogBreeds, ...catBreeds];
+
+    res.status(200).json(allBreeds);
+  } catch (error) {
+    console.error('Error fetching breeds:', error);
+    res.status(500).json({ message: 'Failed to fetch breeds' });
+  }
+});
 
 // Configure multer for memory storage
 const upload = multer({

@@ -4,6 +4,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/PetDetailsPage.css";
+import BreedSelector from '../components/BreedSelector';
 
 const PetDetailsPage = () => {
   const { petId } = useParams();
@@ -20,6 +21,8 @@ const PetDetailsPage = () => {
   const [editingWeight, setEditingWeight] = useState({ weight: "", date: "" });
   const [editingVacc, setEditingVacc] = useState({ vaccine: "", date: "" });
   const fileInputRef = useRef(null);
+  const [selectedBreed, setSelectedBreed] = useState(null);
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -27,6 +30,10 @@ const PetDetailsPage = () => {
       navigate("/login");
       return;
     }
+
+    const handleBreedSelection = (breed) => {
+      setSelectedBreed(breed);
+    };
 
     const fetchPetDetails = async () => {
       try {
@@ -363,7 +370,6 @@ const PetDetailsPage = () => {
     <div className="pet-details-page">
       <Header />
       <div className="pet-details-content">
-        {/* Pet Profile Section */}
         <section className="pet-header">
           <div className="pet-image-container">
             <input
@@ -408,11 +414,10 @@ const PetDetailsPage = () => {
                   onChange={(e) => setEditedPet({...editedPet, age: e.target.value})}
                   placeholder="Age"
                 />
-                <input
-                  type="text"
-                  value={editedPet.breed}
-                  onChange={(e) => setEditedPet({...editedPet, breed: e.target.value})}
-                  placeholder="Breed"
+                <BreedSelector
+                  onSelectBreed={(selectedBreed) =>
+                    setEditedPet({ ...editedPet, breed: selectedBreed })
+                  }
                 />
                 <div className="edit-actions">
                   <button onClick={handleUpdatePet}>Save Changes</button>
