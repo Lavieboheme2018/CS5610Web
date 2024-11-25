@@ -82,3 +82,53 @@
   background-color: #0056b3;
 }
 
+
+/* Responsive design: use media queries to optimize the display effect on different devices.*/
+
+@media (max-width: 768px) {
+  .pets-list {
+    grid-template-columns: 1fr; /* Stack items on smaller screens */
+  }
+
+  .pet-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .header {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .welcome-banner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .welcome-images {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-page-wrapper {
+    padding: 0 10px; /* Reduce padding */
+  }
+
+  .pet-avatar img {
+    width: 80px; /* Reduce avatar size */
+    height: 80px;
+  }
+
+  .add-pet-button,
+  .submit-button {
+    width: 100%; /* Buttons stretch full width */
+  }
+
+  .modal-content {
+    width: 95%; /* Ensure modal adapts to small screen */
+  }
+}
