@@ -100,6 +100,14 @@ https://youtu.be/EEiAfHAMnSM
   ```bash
   npm install recharts
   ```
+- **Axios** for making HTTP requests:
+  ```bash
+  npm install axios
+  ```
+- **Google Maps** related packages:
+  ```bash
+  npm install @googlemaps/js-api-loader
+  ```
 
 ### **Frontend Dependencies**
 - **React Router DOM** for routing:
@@ -214,9 +222,7 @@ This platform offers:
 - **Health Record Management:** Store and manage health data such as vaccinations, medications, and vet visits in a user-friendly timeline.
 - **Data Visualization:** Visualize health trends (e.g., weight changes) through charts for better monitoring.
 - **Multi-Pet Management:** Manage multiple pets within a single account.
-- **Vet Information Integration:** Store and manage veterinarian details, including contact information and visit history.
-- **Sharing Feature:** Securely share pet health data with caretakers and veterinarians.
-
+- **Vet & Hospital Integration:** Search for nearby vet hospitals.
 ---
 
 ## Key Wireframes
@@ -263,7 +269,6 @@ This platform offers:
 **Components:**
 - **User Profile Section:** Displays profile image, name, email, and password with update options.
 - **Pet Profile Section:** Profile cards for each pet with their photo, health information, and recent updates.
-- **Update and Add Reminder Buttons:** Enable updates and setting health reminders for each pet.
 
 **Wireframe Description:** The page displays user profile at the top, followed by pet profiles in a grid. Each pet’s health details are shown with options to update or add reminders.
 
@@ -275,10 +280,6 @@ This platform offers:
 **Components:**
 - **Search Bar:** Dropdown to select a pet for detailed health view.
 - **Pet Profile:** Basic information of the selected pet.
-- **Health Conditions:** Current health conditions listed.
-- **Medications:** Summary of medications and dosages.
-- **Upcoming Reminders:** Reminders for vet visits, vaccinations, or medications.
-- **Recent Vet Visits:** List of latest vet visits.
 
 **Wireframe Description:** Organized sections provide quick access to all health information for the selected pet, prioritizing ease of navigation.
 
