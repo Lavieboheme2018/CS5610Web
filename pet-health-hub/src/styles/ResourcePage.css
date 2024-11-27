@@ -1,0 +1,17 @@
+.resources-page {
+    text-align: center;
+  }
+  
+  .service-list {
+    margin-top: 20px;
+    padding: 20px;
+    text-align: left;
+  }
+  
+  .service-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  

@@ -6,6 +6,7 @@ import ProfilePage from './pages/ProfilePage';
 import SearchPage from './pages/SearchPage';
 import PetDetailsPage from './pages/PetDetailsPage';
 import AboutPage from './pages/AboutPage';
+import ResourcePage from './pages/ResourcePage';
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/details/:petId" element={<PetDetailsPage />} />
-        <Route path="/about" element={<AboutPage />} />
+        <Route path="/about" element={<AboutPage />} /> 
+        <Route path="/resources" element={<ResourcePage />} /> 
       </Routes>
     </Router>
   );
