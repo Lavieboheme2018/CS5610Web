@@ -18,7 +18,8 @@ const ResourcesPage = () => {
 
     service.current.nearbySearch(request, (results, status) => {
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        setServices(results);  // Store results in state
+        setServices(results);  // Store results in state 
+
         // Add markers to the map
         results.forEach((place) => {
           const marker = new window.google.maps.Marker({
@@ -29,12 +30,47 @@ const ResourcesPage = () => {
               url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',  // Red icon
             },
           });
+
+          // Prepare the data to send to the backend
+        const serviceData = {
+          name: place.name,
+          location: {
+            lat: place.geometry.location.lat(),
+            lng: place.geometry.location.lng(),
+          },
+          address: place.vicinity || '',
+          rating: place.rating || null,
+          placeId: place.place_id || '',
+        }; 
+
+        // Send the service data to the back-end
+        sendServiceToBackend(serviceData);
         });
       } else {
         console.error("Error fetching services", status);
       }
     });
-  };
+  }; 
+
+  // Function to send the service data to the back-end
+  const sendServiceToBackend = async (serviceData) => {
+  try {
+    const response = await fetch('/api/services', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(serviceData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to save service to the database');
+    }
+    console.log('Service saved successfully:', serviceData.name);
+  } catch (error) {
+    console.error('Error sending service to backend:', error.message);
+  }
+};
 
   // Initialize map and get user location
   useEffect(() => {
@@ -72,6 +108,7 @@ const ResourcesPage = () => {
             <div key={index} className="service-item">
               <h3>{service.name}</h3>
               <p>{service.vicinity}</p>
+              {service.rating && <p>Rating: {service.rating}</p>}
             </div>
           ))
         ) : (
