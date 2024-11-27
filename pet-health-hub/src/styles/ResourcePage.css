@@ -1,17 +1,58 @@
 .resources-page {
-    text-align: center;
-  }
-  
-  .service-list {
-    margin-top: 20px;
-    padding: 20px;
-    text-align: left;
-  }
-  
-  .service-item {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrapper {
+  flex: 1;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.service-list {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.service-item {
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+/* Info Window Styles */
+.info-window {
+  padding: 8px;
+  max-width: 300px;
+}
+
+.info-window h3 {
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.info-window p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.info-window ul {
+  margin: 4px 0;
+  padding-left: 20px;
+  font-size: 13px;
+}
+
+.info-window a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.info-window a:hover {
+  text-decoration: underline;
+}

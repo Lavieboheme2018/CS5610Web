@@ -15,7 +15,7 @@ function WelcomeBanner({ isLoggedIn, userName }) {
     <div className="welcome-banner">
       <div className="welcome-text">
         <h1>All Your Pet's Health Record,</h1>
-        <h1> in One Place</h1>
+        <h1>in One Place</h1>
         <button onClick={handleButtonClick}>
           {isLoggedIn ? `Welcome, ${userName}!` : 'Get Started!'}
         </button>

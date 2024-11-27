@@ -1,61 +1,26 @@
-/* src/pages/HomePage.css */
 .homepage {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  
-  .homepage > * {
-    margin-bottom: 20px;
-  }
+  font-family: system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-  /* Responsive design: use media queries to optimize the display effect on different devices.*/
+.homepage > * {
+  margin-block-end: clamp(1rem, 3vw, 1.25rem);
+}
 
 @media (max-width: 768px) {
+  .homepage {
+    gap: clamp(0.75rem, 2vw, 1rem);
+  }
+  
   .pets-list {
-    grid-template-columns: 1fr; /* Stack items on smaller screens */
-  }
-
-  .pet-card {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .header {
-    flex-direction: column;
-    text-align: center;
-    gap: 10px;
-  }
-
-  .welcome-banner {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .welcome-images {
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 480px) {
-  .about-page-wrapper {
-    padding: 0 10px; /* Reduce padding */
-  }
-
-  .pet-avatar img {
-    width: 80px; /* Reduce avatar size */
-    height: 80px;
-  }
-
-  .add-pet-button,
-  .submit-button {
-    width: 100%; /* Buttons stretch full width */
-  }
-
-  .modal-content {
-    width: 95%; /* Ensure modal adapts to small screen */
+  .homepage > * {
+    margin-block-end: 0.75rem;
   }
 }

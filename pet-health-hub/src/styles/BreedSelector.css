@@ -1,44 +1,48 @@
 .breed-selector {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    margin: 20px auto;
-  }
-  
-  .breed-search-input {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-    box-sizing: border-box;
-  }
-  
+  position: relative;
+  width: min(95%, 400px);
+  margin: clamp(1rem, 3vw, 1.25rem) auto;
+}
+
+.breed-search-input {
+  width: 100%;
+  padding: clamp(0.5rem, 2vw, 0.75rem);
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.breed-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: min(50vh, 200px);
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  list-style: none;
+  z-index: 10;
+}
+
+.breed-option {
+  padding: clamp(0.5rem, 2vw, 0.75rem);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.breed-option:hover {
+  background: #f0f0f0;
+}
+
+@media (max-width: 480px) {
   .breed-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
-    margin: 0;
-    padding: 0;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    list-style: none;
-    z-index: 10;
+    max-height: 40vh;
   }
-  
-  .breed-option {
-    padding: 10px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .breed-option:hover {
-    background: #f0f0f0;
-  }
-  
+}

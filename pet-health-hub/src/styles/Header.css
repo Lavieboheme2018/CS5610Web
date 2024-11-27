@@ -1,120 +1,98 @@
-/* Header.css */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: clamp(0.75rem, 2vw, 1.25rem);
   background-color: #f9f9f9;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  gap: clamp(0.5rem, 2vw, 1rem);
 }
+
 nav {
   display: flex;
-  gap: 20px;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  flex-wrap: wrap;
+  align-items: center;
 }
 
-  
-  .logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #007bff;
-    cursor: pointer;
-    font-family: 'Trebuchet MS', sans-serif;
-  }
-  
-  .logo span {
-    color: #28a745;
-    font-style: italic;
-    font-family: 'Arial', serif;
-  }
-  
-  nav a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-  }
-  
-  nav a:hover {
-    color: #007bff;
-    border-bottom: 2px solid #007bff;
-  }
-  
-  .auth-buttons button {
-    margin-left: 10px;
-    padding: 5px 15px;
-    border: 1px solid #007bff;
-    background-color: white;
-    color: #007bff;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .auth-buttons button:hover {
-    background-color: #007bff;
-    color: white;
-  }
+.logo {
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-weight: bold;
+  color: #007bff;
+  cursor: pointer;
+  font-family: system-ui, -apple-system, sans-serif;
+}
 
-  nav button {
-    background: none;
-    border: none;
-    color: #007bff;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-right: 15px;
-  }
-  
-  nav button:hover {
-    text-decoration: underline;
-  }
+.logo span {
+  color: #28a745;
+  font-style: italic;
+}
 
+nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 0.5rem;
+}
 
-  /* Responsive design: use media queries to optimize the display effect on different devices.*/
+nav a:hover {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+}
+
+.auth-buttons button {
+  margin-inline-start: clamp(0.5rem, 1vw, 0.75rem);
+  padding: 0.5rem 1rem;
+  border: 1px solid #007bff;
+  background-color: white;
+  color: #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+nav button {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  cursor: pointer;
+  padding: 0.5rem;
+}
 
 @media (max-width: 768px) {
-  .pets-list {
-    grid-template-columns: 1fr; /* Stack items on smaller screens */
-  }
-
-  .pet-card {
-    flex-direction: column;
-    text-align: center;
-  }
-
   .header {
     flex-direction: column;
     text-align: center;
-    gap: 10px;
   }
 
-  .welcome-banner {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .welcome-images {
-    margin: 0 auto;
-    display: flex;
+  nav {
     justify-content: center;
+  }
+
+  .auth-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .auth-buttons button {
+    margin: 0;
+    flex: 1;
+    max-width: 200px;
   }
 }
 
 @media (max-width: 480px) {
-  .about-page-wrapper {
-    padding: 0 10px; /* Reduce padding */
+  nav {
+    flex-direction: column;
+    width: 100%;
   }
 
-  .pet-avatar img {
-    width: 80px; /* Reduce avatar size */
-    height: 80px;
-  }
-
-  .add-pet-button,
-  .submit-button {
-    width: 100%; /* Buttons stretch full width */
-  }
-
-  .modal-content {
-    width: 95%; /* Ensure modal adapts to small screen */
+  nav a, nav button {
+    width: 100%;
+    text-align: center;
   }
 }

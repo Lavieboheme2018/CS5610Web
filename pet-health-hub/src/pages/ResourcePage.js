@@ -1,50 +1,98 @@
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import '../styles/ResourcePage.css';
 
 const ResourcesPage = () => {
-  const [services, setServices] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const mapRef = useRef(null);
   const map = useRef(null);
   const service = useRef(null);
+  const infoWindow = useRef(null);
+  const markers = useRef([]);
 
-  // Function to fetch services using Places API
+  const getDirectionsUrl = (destLat, destLng) => {
+    return `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLng}&travelmode=driving`;
+  };
+
+  const clearMarkers = () => {
+    markers.current.forEach(marker => marker.setMap(null));
+    markers.current = [];
+  };
+
   const fetchNearbyServices = (location) => {
+    setIsLoading(true);
     const request = {
       location,
-      radius: 5000,  // 5 km radius
+      radius: 5000,
       keyword: 'dogs, cats, pet care, dog grooming, cat grooming, veterinary, puppy care, pet clinic, pet shop, pet boarding',
     };
 
     service.current.nearbySearch(request, (results, status) => {
+      setIsLoading(false);
+      
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        setServices(results);  // Store results in state 
+        if (!infoWindow.current) {
+          infoWindow.current = new window.google.maps.InfoWindow({
+            disableAutoPan: true
+          });
+        }
 
-        // Add markers to the map
         results.forEach((place) => {
           const marker = new window.google.maps.Marker({
-            position: place.geometry.location,  // Ensure this is a valid LatLng object
+            position: place.geometry.location,
             map: map.current,
             title: place.name,
             icon: {
-              url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',  // Red icon
+              url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
             },
           });
 
-          // Prepare the data to send to the backend
-        const serviceData = {
-          name: place.name,
-          location: {
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng(),
-          },
-          address: place.vicinity || '',
-          rating: place.rating || null,
-          placeId: place.place_id || '',
-        }; 
+          markers.current.push(marker);
 
-        // Send the service data to the back-end
-        sendServiceToBackend(serviceData);
+          marker.addListener('click', () => {
+            if (infoWindow.current) {
+              infoWindow.current.close();
+            }
+
+            service.current.getDetails(
+              {
+                placeId: place.place_id,
+                fields: ['name', 'rating', 'formatted_address', 'formatted_phone_number', 'website', 'opening_hours']
+              },
+              (placeDetails, detailStatus) => {
+                if (detailStatus === window.google.maps.places.PlacesServiceStatus.OK) {
+                  const lat = place.geometry.location.lat();
+                  const lng = place.geometry.location.lng();
+                  const directionsUrl = getDirectionsUrl(lat, lng);
+
+                  const content = `
+                    <div class="info-window">
+                      <h3>${placeDetails.name}</h3>
+                      ${placeDetails.rating ? `<p>Rating: ${placeDetails.rating} ⭐</p>` : ''}
+                      ${placeDetails.formatted_address ? `<p>Address: ${placeDetails.formatted_address}</p>` : ''}
+                      ${placeDetails.formatted_phone_number ? `<p>Phone: ${placeDetails.formatted_phone_number}</p>` : ''}
+                      ${placeDetails.website ? `<p><a href="${placeDetails.website}" target="_blank">Visit Website</a></p>` : ''}
+                      <p><a href="${directionsUrl}" target="_blank" class="directions-link">Get Directions 🚗</a></p>
+                      ${placeDetails.opening_hours ? `
+                        <p>Hours:</p>
+                        <ul>
+                          ${placeDetails.opening_hours.weekday_text.map(day => `<li>${day}</li>`).join('')}
+                        </ul>
+                      ` : ''}
+                    </div>
+                  `;
+
+                  infoWindow.current.setContent(content);
+                  infoWindow.current.open({
+                    map: map.current,
+                    anchor: marker,
+                    shouldFocus: false
+                  });
+                }
+              }
+            );
+          });
         });
       } else {
         console.error("Error fetching services", status);
@@ -52,42 +100,29 @@ const ResourcesPage = () => {
     });
   }; 
 
-  // Function to send the service data to the back-end
-  const sendServiceToBackend = async (serviceData) => {
-  try {
-    const response = await fetch('/api/services', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(serviceData),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to save service to the database');
+  const handleMapIdle = () => {
+    if (map.current) {
+      const center = map.current.getCenter();
+      clearMarkers();
+      fetchNearbyServices(center);
     }
-    console.log('Service saved successfully:', serviceData.name);
-  } catch (error) {
-    console.error('Error sending service to backend:', error.message);
-  }
-};
+  };
 
-  // Initialize map and get user location
   useEffect(() => {
     if (window.google) {
       map.current = new window.google.maps.Map(mapRef.current, {
-        center: { lat: 40.7128, lng: -74.0060 },  // Default location (New York)
+        center: { lat: 49.2827, lng: -123.1207 },
         zoom: 13,
       });
 
       service.current = new window.google.maps.places.PlacesService(map.current);
+      map.current.addListener('idle', handleMapIdle);
 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const userLocation = new window.google.maps.LatLng(position.coords.latitude, position.coords.longitude);
             map.current.setCenter(userLocation);
-            fetchNearbyServices(userLocation);
           },
           () => alert("Geolocation failed!")
         );
@@ -95,26 +130,36 @@ const ResourcesPage = () => {
     } else {
       console.error("Google Maps API is not loaded.");
     }
+
+    return () => {
+      if (infoWindow.current) {
+        infoWindow.current.close();
+      }
+      clearMarkers();
+      if (map.current && window.google) {
+        window.google.maps.event.clearListeners(map.current, 'idle');
+      }
+    };
   }, []);
 
   return (
     <div className="resources-page">
-      <h1>Nearby Pet Services</h1>
-      <div ref={mapRef} style={{ height: '500px', width: '100%' }}></div>
-
-      <div className="service-list">
-        {services.length > 0 ? (
-          services.map((service, index) => (
-            <div key={index} className="service-item">
-              <h3>{service.name}</h3>
-              <p>{service.vicinity}</p>
-              {service.rating && <p>Rating: {service.rating}</p>}
+      <Header />
+      <div className="content-wrapper">
+        <h1>Nearby Pet Services</h1>
+        <div className="map-container">
+          <div ref={mapRef} style={{ height: '500px', width: '100%', marginBottom: '20px' }}></div>
+          {isLoading && (
+            <div className="loading-overlay">
+              <div className="loading-content">
+                <div className="spinner"></div>
+                <p>Searching for pet services in this area...</p>
+              </div>
             </div>
-          ))
-        ) : (
-          <p>Loading nearby services...</p>
-        )}
+          )}
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };
