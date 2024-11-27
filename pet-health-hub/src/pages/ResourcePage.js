@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect, useRef } from 'react';
-import GoogleMapComponent from '../components/GoogleMapComponent'; 
 import '../styles/ResourcePage.css';
 
 const ResourcesPage = () => {
   const [services, setServices] = useState([]);
   const mapRef = useRef(null);
+  const map = useRef(null);
   const service = useRef(null);
 
   // Function to fetch services using Places API
@@ -12,12 +13,23 @@ const ResourcesPage = () => {
     const request = {
       location,
       radius: 5000,  // 5 km radius
-      type: ['hospital'],  // Search for hospitals (can modify for other types of services)
+      keyword: 'dogs, cats, pet care, dog grooming, cat grooming, veterinary, puppy care, pet clinic, pet shop, pet boarding',
     };
 
     service.current.nearbySearch(request, (results, status) => {
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
         setServices(results);  // Store results in state
+        // Add markers to the map
+        results.forEach((place) => {
+          const marker = new window.google.maps.Marker({
+            position: place.geometry.location,  // Ensure this is a valid LatLng object
+            map: map.current,
+            title: place.name,
+            icon: {
+              url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',  // Red icon
+            },
+          });
+        });
       } else {
         console.error("Error fetching services", status);
       }
@@ -27,23 +39,25 @@ const ResourcesPage = () => {
   // Initialize map and get user location
   useEffect(() => {
     if (window.google) {
-      const map = new window.google.maps.Map(mapRef.current, {
+      map.current = new window.google.maps.Map(mapRef.current, {
         center: { lat: 40.7128, lng: -74.0060 },  // Default location (New York)
         zoom: 13,
       });
 
-      service.current = new window.google.maps.places.PlacesService(map);
+      service.current = new window.google.maps.places.PlacesService(map.current);
 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const userLocation = new window.google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            map.setCenter(userLocation);
+            map.current.setCenter(userLocation);
             fetchNearbyServices(userLocation);
           },
           () => alert("Geolocation failed!")
         );
       }
+    } else {
+      console.error("Google Maps API is not loaded.");
     }
   }, []);
 

@@ -37,7 +37,7 @@ const GoogleMapComponent = () => {
     const request = {
       location,
       radius: 5000,  // 5 km radius
-      type: ['hospital']  // Search for hospitals (you can adjust this as needed)
+      keyword: 'dogs, cats, pet care, dog grooming, cat grooming, veterinary, puppy care, pet clinic, pet shop, pet boarding',
     };
 
     service.current.nearbySearch(request, (results, status) => {
