@@ -442,8 +442,10 @@ const PetDetailsPage = () => {
           <section className="weight-section">
             <h2>Weight History</h2>
             <form onSubmit={handleAddWeight} className="add-record-form">
+              <label htmlFor="weight-input">Weight (kg)</label>
               <input
                 type="number"
+                id="weight-input"
                 step="0.1"
                 value={newWeight}
                 onChange={(e) => setNewWeight(e.target.value)}
@@ -537,82 +539,114 @@ const PetDetailsPage = () => {
           <section className="vaccination-section">
             <h2>Vaccination Records</h2>
             <form onSubmit={handleAddVaccination} className="add-record-form">
-              <input
-                type="text"
-                value={newVaccine.vaccine}
-                onChange={(e) => setNewVaccine({...newVaccine, vaccine: e.target.value})}
-                placeholder="Vaccine name"
-                required
-              />
-              <input
-                type="date"
-                value={newVaccine.date}
-                onChange={(e) => setNewVaccine({...newVaccine, date: e.target.value})}
-                required
-              />
-              <button type="submit">Add Vaccination</button>
+              {/* Vaccine Name Row */}
+              <div className="form-row">
+                <label htmlFor="new-vaccine-name">Vaccine Name</label>
+                <input
+                  type="text"
+                  id="new-vaccine-name"
+                  value={newVaccine.vaccine}
+                  onChange={(e) =>
+                    setNewVaccine({ ...newVaccine, vaccine: e.target.value })
+                  }
+                  placeholder="Vaccine name"
+                  required
+                />
+              </div>
+
+              {/* Vaccination Date Row */}
+              <div className="form-row">
+                <label htmlFor="new-vaccine-date">Vaccination Date</label>
+                <input
+                  type="date"
+                  id="new-vaccine-date"
+                  value={newVaccine.date}
+                  onChange={(e) =>
+                    setNewVaccine({ ...newVaccine, date: e.target.value })
+                  }
+                  required
+                />
+              </div>
+
+              {/* Add Vaccination Button Row */}
+              <div className="form-button-row">
+                <button type="submit">Add Vaccination</button>
+              </div>
             </form>
+
+            {/* Vaccination Records */}
             <div className="records-list">
               {pet.vaccinationHistory && pet.vaccinationHistory.length > 0 ? (
-                pet.vaccinationHistory.sort((a, b) => new Date(a.date) - new Date(b.date)).map((vacc) => (
-                  <div key={vacc._id} className="record-item">
-                    {editingVaccId === vacc._id ? (
-                      <form onSubmit={handleUpdateVaccination} className="edit-record-form">
-                        <input
-                          type="text"
-                          value={editingVacc.vaccine}
-                          onChange={(e) => setEditingVacc({
-                            ...editingVacc,
-                            vaccine: e.target.value
-                          })}
-                          required
-                        />
-                        <input
-                          type="date"
-                          value={editingVacc.date}
-                          onChange={(e) => setEditingVacc({
-                            ...editingVacc,
-                            date: e.target.value
-                          })}
-                          required
-                        />
-                        <div className="edit-actions">
-                          <button type="submit">Save</button>
-                          <button 
-                            type="button" 
-                            className="delete-button"
-                            onClick={() => handleDeleteVaccination(vacc._id)}
+                pet.vaccinationHistory
+                  .sort((a, b) => new Date(a.date) - new Date(b.date))
+                  .map((vacc) => (
+                    <div key={vacc._id} className="record-item">
+                      {editingVaccId === vacc._id ? (
+                        <form onSubmit={handleUpdateVaccination} className="edit-record-form">
+                          <input
+                            type="text"
+                            value={editingVacc.vaccine}
+                            onChange={(e) =>
+                              setEditingVacc({
+                                ...editingVacc,
+                                vaccine: e.target.value,
+                              })
+                            }
+                            required
+                          />
+                          <input
+                            type="date"
+                            value={editingVacc.date}
+                            onChange={(e) =>
+                              setEditingVacc({
+                                ...editingVacc,
+                                date: e.target.value,
+                              })
+                            }
+                            required
+                          />
+                          <div className="edit-actions">
+                            <button type="submit">Save</button>
+                            <button
+                              type="button"
+                              className="delete-button"
+                              onClick={() => handleDeleteVaccination(vacc._id)}
+                            >
+                              Delete
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setEditingVaccId(null);
+                                setEditingVacc({ vaccine: "", date: "" });
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </form>
+                      ) : (
+                        <div className="vaccination-record">
+                          <span className="record-date">
+                            {new Date(vacc.date).toISOString().slice(0, 10)}
+                          </span>
+                          <span className="record-name">{vacc.vaccine}</span>
+                          <button
+                            className="edit-button"
+                            onClick={() => {
+                              setEditingVaccId(vacc._id);
+                              setEditingVacc({
+                                vaccine: vacc.vaccine,
+                                date: new Date(vacc.date).toISOString().split("T")[0],
+                              });
+                            }}
                           >
-                            Delete
+                            Edit
                           </button>
-                          <button type="button" onClick={() => {
-                            setEditingVaccId(null);
-                            setEditingVacc({ vaccine: "", date: "" });
-                          }}>Cancel</button>
                         </div>
-                      </form>
-                    ) : (
-                      <div className="vaccination-record">
-                        <span className="record-date">
-                          {new Date(vacc.date).toISOString().slice(0, 10)}
-                        </span>
-                        <span className="record-name">{vacc.vaccine}</span>
-                        <button
-                          className="edit-button"
-                          onClick={() => {
-                            setEditingVaccId(vacc._id);
-                            setEditingVacc({
-                              vaccine: vacc.vaccine,
-                              date: new Date(vacc.date).toISOString().split('T')[0]
-                            });
-                          }}
-                        >
-                          Edit
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ))
+                      )}
+                    </div>
+                  ))
               ) : (
                 <p className="no-records">No vaccination records available</p>
               )}

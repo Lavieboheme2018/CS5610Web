@@ -19,14 +19,30 @@ nav {
 .logo {
   font-size: clamp(1.4rem, 3vw, 1.8rem);
   font-weight: bold;
-  color: #007bff;
+  color: #006ADB;
   cursor: pointer;
   font-family: system-ui, -apple-system, sans-serif;
 }
 
 .logo span {
-  color: #28a745;
+  color: #1F7F35;
   font-style: italic;
+}
+nav button {
+  background: none;
+  border: none;
+  color: #006ADB;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+nav button:hover {
+  color: white;
+  background-color: #006ADB;
+  border-radius: 5px; 
+  padding: 0.5rem;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 nav a {
@@ -37,28 +53,19 @@ nav a {
 }
 
 nav a:hover {
-  color: #007bff;
+  color: #006ADB;
   border-bottom: 2px solid #007bff;
 }
 
 .auth-buttons button {
   margin-inline-start: clamp(0.5rem, 1vw, 0.75rem);
   padding: 0.5rem 1rem;
-  border: 1px solid #007bff;
+  border: 1px solid #006ADB;
   background-color: white;
-  color: #007bff;
+  color: #006ADB;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
-}
-
-nav button {
-  background: none;
-  border: none;
-  color: #007bff;
-  font-size: clamp(0.875rem, 2vw, 1rem);
-  cursor: pointer;
-  padding: 0.5rem;
 }
 
 @media (max-width: 768px) {

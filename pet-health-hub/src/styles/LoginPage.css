@@ -79,7 +79,7 @@
 }
 
 .login-tabs button.active {
-  background-color: #007bff;
+  background-color: #006ADB;
   color: white;
 }
 
@@ -99,7 +99,7 @@
 }
 
 .form-group input:focus {
-  border-color: #007bff;
+  border-color: #006ADB;
   box-shadow: 0 0 0 2px rgba(0,123,255,0.1);
 }
 
@@ -108,7 +108,7 @@
   padding: 8px;
   font-size: 1rem;
   color: white;
-  background-color: #007bff;
+  background-color: #006ADB;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -120,52 +120,71 @@
   background-color: #0056b3;
 }
 
-/* Responsive design: use media queries to optimize the display effect on different devices.*/
-
+/* Updated responsive design */
 @media (max-width: 768px) {
-  .pets-list {
-    grid-template-columns: 1fr; /* Stack items on smaller screens */
+  .login-container {
+    flex-direction: column; /* Stack vertically on mobile */
+    padding: 15px;
+    gap: 30px;
+    min-height: auto;
   }
 
-  .pet-card {
-    flex-direction: column;
-    text-align: center;
+  .login-image {
+    max-width: 100%; /* Full width on mobile */
+    justify-content: center; /* Center image */
+    order: -1; /* Move image to top */
   }
 
-  .header {
-    flex-direction: column;
-    text-align: center;
-    gap: 10px;
-  }
-
-  .welcome-banner {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .welcome-images {
+  .pets-image {
+    max-width: 400px; /* Limit image size on mobile */
     margin: 0 auto;
-    display: flex;
-    justify-content: center;
+  }
+
+  .login-form-container {
+    max-width: 100%; /* Full width on mobile */
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .login-header {
+    text-align: center;
+  }
+
+  .login-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .login-header p {
+    font-size: 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .about-page-wrapper {
-    padding: 0 10px; /* Reduce padding */
+  .login-container {
+    padding: 10px;
+    gap: 20px;
   }
 
-  .pet-avatar img {
-    width: 80px; /* Reduce avatar size */
-    height: 80px;
+  .pets-image {
+    max-width: 300px; /* Smaller image on very small screens */
   }
 
-  .add-pet-button,
-  .submit-button {
-    width: 100%; /* Buttons stretch full width */
+  .login-form-container {
+    padding: 12px;
   }
 
-  .modal-content {
-    width: 95%; /* Ensure modal adapts to small screen */
+  .login-tabs button {
+    padding: 6px 0;
+    font-size: 0.9rem;
+  }
+
+  .form-group input {
+    padding: 7px;
+    font-size: 0.9rem;
+  }
+
+  .login-button {
+    padding: 7px;
+    font-size: 0.9rem;
   }
 }

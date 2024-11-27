@@ -1,4 +1,9 @@
-/* src/styles/ProfilePage.css */
+/* Base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 .profile-page {
   min-height: 100vh;
@@ -88,7 +93,7 @@
   text-align: center;
   border-radius: 50%;
   opacity: 0;
-  transition: opacity 0.3s ease; 
+  transition: opacity 0.3s ease;
 }
 
 .avatar-container:hover .edit-overlay,
@@ -104,7 +109,7 @@
   width: 40px;
   height: 40px;
   border: 4px solid #f3f3f3;
-  border-top: 4px solid #007bff;
+  border-top: 4px solid #006ADB;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -128,7 +133,7 @@
 
 .user-info button {
   padding: 0.5rem 1rem;
-  background: #007bff;
+  background: #006ADB;
   color: white;
   border: none;
   border-radius: 4px;
@@ -170,6 +175,13 @@
   font-size: 1.8rem;
 }
 
+.pets-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
 .pets-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -198,10 +210,9 @@
   position: relative;
 }
 
-/* This is the key change */
 .pet-avatar img {
-  max-width: 100%;
-  height: auto; /* Ensure image scales correctly */
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -233,7 +244,7 @@
 .pet-card button {
   margin-top: 1rem;
   padding: 0.75rem 1.5rem;
-  background-color: #007bff;
+  background-color: #006ADB;
   color: white;
   border: none;
   border-radius: 6px;
@@ -245,54 +256,6 @@
 
 .pet-card button:hover {
   background-color: #0056b3;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .profile-content {
-    padding: 1rem;
-  }
-
-  .user-details {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .user-info p {
-    justify-content: center;
-  }
-
-  .edit-form {
-    align-items: center;
-  }
-
-  .pets-list {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
-  }
-}
-
-.pets-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.add-pet-button {
-  padding: 0.75rem 1.5rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  font-size: 1rem;
-}
-
-.add-pet-button:hover {
-  background-color: #007bff;
 }
 
 /* Modal Styles */
@@ -307,6 +270,9 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 1rem;
+  min-height: 100vh;
+  width: 100%;
 }
 
 .modal-content {
@@ -316,6 +282,9 @@
   width: 90%;
   max-width: 500px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1001;
+  margin: auto;
 }
 
 .modal-content h2 {
@@ -346,6 +315,7 @@
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 1rem;
+  width: 100%;
 }
 
 .modal-buttons {
@@ -355,80 +325,114 @@
   margin-top: 1rem;
 }
 
-.submit-button {
-  padding: 0.75rem 1.5rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
+.submit-button,
 .cancel-button {
   padding: 0.75rem 1.5rem;
-  background-color: #6c757d;
-  color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s;
+  font-size: 1rem;
+}
+
+.submit-button {
+  background-color: #006ADB;
+  color: white;
 }
 
 .submit-button:hover {
   background-color: #0056b3;
 }
 
+.cancel-button {
+  background-color: #6c757d;
+  color: white;
+}
+
 .cancel-button:hover {
   background-color: #5a6268;
 }
 
-/* Responsive design: use media queries to optimize the display effect on different devices.*/
-
+/* Responsive Design */
 @media (max-width: 768px) {
-  .pets-list {
-    grid-template-columns: 1fr; /* Stack items on smaller screens */
+  .profile-content {
+    padding: 1rem;
   }
 
-  .pet-card {
+  .user-details {
     flex-direction: column;
+    align-items: center;
     text-align: center;
   }
 
-  .header {
-    flex-direction: column;
-    text-align: center;
-    gap: 10px;
-  }
-
-  .welcome-banner {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .welcome-images {
-    margin: 0 auto;
-    display: flex;
+  .user-info p {
     justify-content: center;
+  }
+
+  .edit-form {
+    align-items: center;
+  }
+
+  .edit-form input {
+    max-width: 100%;
+  }
+
+  .pets-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .add-pet-button {
+    width: 100%;
+  }
+
+  .pets-list {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 0.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .about-page-wrapper {
-    padding: 0 10px; /* Reduce padding */
+  .profile-content {
+    padding: 0.75rem;
   }
 
-  .pet-avatar img {
-    width: 80px; /* Reduce avatar size */
-    height: 80px;
+  .user-profile,
+  .pets-profile {
+    padding: 1rem;
   }
 
-  .add-pet-button,
-  .submit-button {
-    width: 100%; /* Buttons stretch full width */
+  .user-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .pet-avatar {
+    width: 100px;
+    height: 100px;
   }
 
   .modal-content {
-    width: 95%; /* Ensure modal adapts to small screen */
+    padding: 1.5rem;
+    width: 95%;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .submit-button,
+  .cancel-button {
+    width: 100%;
+  }
+
+  .pet-card {
+    padding: 1rem;
+  }
+
+  .pet-card h3 {
+    font-size: 1.3rem;
   }
 }
