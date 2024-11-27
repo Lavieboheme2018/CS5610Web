@@ -3,7 +3,7 @@ const PetService = require('../models/PetService');
 const router = express.Router();
 
 // Route to save a pet service
-router.post('/api/services', async (req, res) => {
+router.post('/services', async (req, res) => {
   console.log('Received request to save service'); //debug 
   const { name, location, address, rating, contact } = req.body;
 
@@ -24,7 +24,7 @@ router.post('/api/services', async (req, res) => {
 }); 
 
 // Route to retrieve all pet services
-router.get('/api/services', async (req, res) => {
+router.get('/services', async (req, res) => {
   try {
     const services = await PetService.find(); // Fetch all services from the database
     res.json(services); // Send the services as JSON response
