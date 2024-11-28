@@ -24,7 +24,7 @@ https://youtu.be/EEiAfHAMnSM
 
 3. Set up the environment variables by creating a .env file in the backend directory with the following contents:
    ```bash
-   MONGO_URI=mongodb+srv://cs5610final:cs5610final@cluster0.ojfdl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+   MONGO_URI=mongodb+srv://cs5610final:cs5610final@cluster0.ojfdl.mongodb.net/pet-health-hub?retryWrites=true&w=majority&appName=Cluster0
    JWT_SECRET=your_secret_key
    PORT=3001
    ```
