@@ -45,7 +45,7 @@ describe('FeaturePreview Component', () => {
   
     // Wait for the fetch call and DOM update
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:3001/api/pets/user', expect.anything());
+      expect(global.fetch).toHaveBeenCalledWith('https://pet-health-hub-backend.onrender.com/api/pets/user', expect.anything());
       expect(screen.getByText('Buddy')).toBeInTheDocument();
       expect(screen.getByText('Milo')).toBeInTheDocument();
     });
@@ -88,6 +88,6 @@ describe('FeaturePreview Component', () => {
 
     await waitFor(() => expect(screen.getByText('Buddy')).toBeInTheDocument());
     await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(2));
-    expect(global.fetch).toHaveBeenCalledWith('http://localhost:3001/api/pets/image/buddy.png', expect.anything());
+    expect(global.fetch).toHaveBeenCalledWith('https://pet-health-hub-backend.onrender.com/api/pets/image/buddy.png', expect.anything());
   });
 });

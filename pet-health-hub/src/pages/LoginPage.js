@@ -37,7 +37,7 @@ const LoginPage = () => {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch('http://localhost:3001/api/auth/login', {
+      const response = await fetch('https://pet-health-hub-backend.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -50,7 +50,7 @@ const LoginPage = () => {
       const { token } = await response.json();
       localStorage.setItem('token', token);
 
-      const userResponse = await fetch('http://localhost:3001/api/users/profile', {
+      const userResponse = await fetch('https://pet-health-hub-backend.onrender.com/api/users/profile', {
         headers: { Authorization: `Bearer ${token}` },
       });
       const userData = await userResponse.json();
@@ -66,7 +66,7 @@ const LoginPage = () => {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch('http://localhost:3001/api/auth/register', {
+      const response = await fetch('https://pet-health-hub-backend.onrender.com/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

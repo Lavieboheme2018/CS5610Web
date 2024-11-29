@@ -34,7 +34,7 @@ https://youtu.be/EEiAfHAMnSM
    ```bash
    npm start
    ```
-   The backend will run at **`http://localhost:3001`** by default.
+   The backend will run at **`https://pet-health-hub-backend.onrender.com`** by default.
 
 ---
 

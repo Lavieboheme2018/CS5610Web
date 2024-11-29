@@ -48,7 +48,7 @@ const FeaturePreview = ({ isLoggedIn }) => {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:3001/api/pets/image/${filename}`,
+        `https://pet-health-hub-backend.onrender.com/api/pets/image/${filename}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -70,7 +70,7 @@ const FeaturePreview = ({ isLoggedIn }) => {
 
   const fetchUserPets = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/pets/user', {
+      const response = await fetch('https://pet-health-hub-backend.onrender.com/api/pets/user', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

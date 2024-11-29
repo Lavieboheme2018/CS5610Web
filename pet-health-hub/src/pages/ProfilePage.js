@@ -26,7 +26,7 @@ const ProfilePage = () => {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:3001/api/pets/image/${filename}`,
+        `https://pet-health-hub-backend.onrender.com/api/pets/image/${filename}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -55,7 +55,7 @@ const ProfilePage = () => {
 
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/users/profile", {
+        const response = await fetch("https://pet-health-hub-backend.onrender.com/api/users/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -71,7 +71,7 @@ const ProfilePage = () => {
         if (userData.profileImage && userData.profileImage.filename) {
           try {
             const imageResponse = await fetch(
-              `http://localhost:3001/api/users/image/${userData.profileImage.filename}`,
+              `https://pet-health-hub-backend.onrender.com/api/users/image/${userData.profileImage.filename}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -93,7 +93,7 @@ const ProfilePage = () => {
 
     const fetchUserPets = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/pets/user", {
+        const response = await fetch("https://pet-health-hub-backend.onrender.com/api/pets/user", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -132,7 +132,7 @@ const ProfilePage = () => {
     try {
       const body = { [field]: updatedValue };
 
-      const response = await fetch("http://localhost:3001/api/users/profile", {
+      const response = await fetch("https://pet-health-hub-backend.onrender.com/api/users/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -176,7 +176,7 @@ const ProfilePage = () => {
     formData.append('profileImage', file);
 
     try {
-      const response = await fetch('http://localhost:3001/api/users/profile-image', {
+      const response = await fetch('https://pet-health-hub-backend.onrender.com/api/users/profile-image', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -191,7 +191,7 @@ const ProfilePage = () => {
       const result = await response.json();
       
       const imageResponse = await fetch(
-        `http://localhost:3001/api/users/image/${result.filename}`,
+        `https://pet-health-hub-backend.onrender.com/api/users/image/${result.filename}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -230,7 +230,7 @@ const ProfilePage = () => {
     const token = localStorage.getItem("token");
     
     try {
-      const response = await fetch("http://localhost:3001/api/pets/create", {
+      const response = await fetch("https://pet-health-hub-backend.onrender.com/api/pets/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

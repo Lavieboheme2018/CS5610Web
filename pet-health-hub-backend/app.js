@@ -10,7 +10,22 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({
+  origin: function (origin, callback) {
+      const allowedOrigins = [
+          'http://localhost:3000', // Local development
+          'https://cs-5610-web-copy.vercel.app', // Deployed Vercel frontend
+      ];
+      if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+      } else {
+          callback(new Error('Not allowed by CORS'));
+      }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
+  credentials: true // Allow credentials (e.g., cookies, authentication headers)
+}));
+
 app.use(express.json());
 
 // Connect to MongoDB
@@ -35,4 +50,4 @@ app.use('/api/users', userRoutes);
 app.use('/api/pets', petRoutes);
 app.use('/api', petServiceRoutes);
 
-module.exports = app; // Export the app for testing and server use
+module.exports = app;

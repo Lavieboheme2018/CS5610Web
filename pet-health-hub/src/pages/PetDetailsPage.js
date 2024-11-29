@@ -37,7 +37,7 @@ const PetDetailsPage = () => {
 
     const fetchPetDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/pets/${petId}`, {
+        const response = await fetch(`https://pet-health-hub-backend.onrender.com/api/pets/${petId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -55,7 +55,7 @@ const PetDetailsPage = () => {
         if (petData.profileImage && petData.profileImage.filename) {
           try {
             const imageResponse = await fetch(
-              `http://localhost:3001/api/pets/image/${petData.profileImage.filename}`,
+              `https://pet-health-hub-backend.onrender.com/api/pets/image/${petData.profileImage.filename}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -99,7 +99,7 @@ const PetDetailsPage = () => {
     formData.append('profileImage', file);
 
     try {
-      const response = await fetch(`http://localhost:3001/api/pets/${petId}/profile-image`, {
+      const response = await fetch(`https://pet-health-hub-backend.onrender.com/api/pets/${petId}/profile-image`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -114,7 +114,7 @@ const PetDetailsPage = () => {
       const result = await response.json();
       
       const imageResponse = await fetch(
-        `http://localhost:3001/api/pets/image/${result.filename}`,
+        `https://pet-health-hub-backend.onrender.com/api/pets/image/${result.filename}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -144,7 +144,7 @@ const PetDetailsPage = () => {
   const handleUpdatePet = async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:3001/api/pets/${petId}`, {
+      const response = await fetch(`https://pet-health-hub-backend.onrender.com/api/pets/${petId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -173,7 +173,7 @@ const PetDetailsPage = () => {
   
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:3001/api/pets/${petId}/weight`, {
+      const response = await fetch(`https://pet-health-hub-backend.onrender.com/api/pets/${petId}/weight`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -202,7 +202,7 @@ const PetDetailsPage = () => {
   
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:3001/api/pets/${petId}/vaccination`, {
+      const response = await fetch(`https://pet-health-hub-backend.onrender.com/api/pets/${petId}/vaccination`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -239,7 +239,7 @@ const PetDetailsPage = () => {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:3001/api/pets/${petId}/weight/${editingWeightId}`,
+        `https://pet-health-hub-backend.onrender.com/api/pets/${petId}/weight/${editingWeightId}`,
         {
           method: 'PUT',
           headers: {
@@ -272,7 +272,7 @@ const PetDetailsPage = () => {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:3001/api/pets/${petId}/vaccination/${editingVaccId}`,
+        `https://pet-health-hub-backend.onrender.com/api/pets/${petId}/vaccination/${editingVaccId}`,
         {
           method: 'PUT',
           headers: {
@@ -308,7 +308,7 @@ const PetDetailsPage = () => {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:3001/api/pets/${petId}/weight/${weightId}`,
+        `https://pet-health-hub-backend.onrender.com/api/pets/${petId}/weight/${weightId}`,
         {
           method: 'DELETE',
           headers: {
@@ -339,7 +339,7 @@ const PetDetailsPage = () => {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:3001/api/pets/${petId}/vaccination/${vaccId}`,
+        `https://pet-health-hub-backend.onrender.com/api/pets/${petId}/vaccination/${vaccId}`,
         {
           method: 'DELETE',
           headers: {

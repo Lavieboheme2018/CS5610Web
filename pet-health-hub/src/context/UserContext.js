@@ -10,7 +10,7 @@ export const UserProvider = ({ children }) => {
     if (!token) return;
 
     try {
-      const response = await fetch('http://localhost:3001/api/users/profile', {
+      const response = await fetch('https://pet-health-hub-backend.onrender.com/api/users/profile', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

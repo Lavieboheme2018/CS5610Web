@@ -32,7 +32,7 @@ const SearchPage = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:3001/api/pets/search?name=${query.name}&breed=${query.breed}`,
+        `https://pet-health-hub-backend.onrender.com/api/pets/search?name=${query.name}&breed=${query.breed}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -63,7 +63,7 @@ const SearchPage = () => {
     const token = localStorage.getItem('token');
     try {
       const response = await fetch(
-        `http://localhost:3001/api/pets/image/${filename}`,
+        `https://pet-health-hub-backend.onrender.com/api/pets/image/${filename}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
