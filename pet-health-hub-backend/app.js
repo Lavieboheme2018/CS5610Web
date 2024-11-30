@@ -14,7 +14,7 @@ app.use(cors({
   origin: function (origin, callback) {
       const allowedOrigins = [
           'http://localhost:3000', // Local development
-          'https://cs-5610-web-mu.vercel.app/', // Deployed Vercel frontend
+          'https://cs-5610-web-mu.vercel.app', // Deployed Vercel frontend
       ];
       if (!origin || allowedOrigins.includes(origin)) {
           callback(null, true);
