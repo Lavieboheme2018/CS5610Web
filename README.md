@@ -5,7 +5,7 @@
 https://docs.google.com/document/d/1V2sQEH0qCQt1l59_vDzWt1inwqAcjk4ZrZDPBVrHl4U/edit?tab=t.0
 
 Website Link:
-**`https://cs-5610-web-mu.vercel.app`**
+https://cs-5610-web-mu.vercel.app
 
 ---
 
