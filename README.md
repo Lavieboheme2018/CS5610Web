@@ -4,8 +4,9 @@
 - **Team Members:** Wanyi Jiang, Sara Bavan, Kehan Yan
 https://docs.google.com/document/d/1V2sQEH0qCQt1l59_vDzWt1inwqAcjk4ZrZDPBVrHl4U/edit?tab=t.0
 
-DEMO 01
-https://youtu.be/EEiAfHAMnSM 
+Website Link:
+**`https://cs-5610-web-mu.vercel.app`**
+
 ---
 
 ## **1. Instructions to Set Up and Run the Project Locally**
@@ -53,7 +54,7 @@ https://youtu.be/EEiAfHAMnSM
    ```bash
    npm start
    ```
-   The frontend will run at **`http://localhost:3000`** by default.
+   The frontend will run at **`https://cs-5610-web-mu.vercel.app`** by default.
 
 ---
 
@@ -96,6 +97,16 @@ https://youtu.be/EEiAfHAMnSM
   ```bash
   npm install gridfs-stream
   ```
+- **Axios** for making HTTP requests:
+  ```bash
+  npm install axios
+  ```
+
+### **Frontend Dependencies**
+- **React Router DOM** for routing:
+  ```bash
+  npm install react-router-dom
+  ```
 - **Recharts** for building graph:
   ```bash
   npm install recharts
@@ -108,13 +119,6 @@ https://youtu.be/EEiAfHAMnSM
   ```bash
   npm install @googlemaps/js-api-loader
   ```
-
-### **Frontend Dependencies**
-- **React Router DOM** for routing:
-  ```bash
-  npm install react-router-dom
-  ```
-
 ---
 
 ## **3. Database Setup Instructions**
