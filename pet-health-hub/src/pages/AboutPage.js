@@ -24,6 +24,13 @@ function AboutPage() {
           CritterCare is built by a team of passionate pet lovers and tech enthusiasts, working
           together to create a better experience for pets and their owners.
         </p>
+        <h1>Contact Us</h1>
+        <p>
+          Email：support@example.com
+        </p>
+        <p>
+          Call：+1-234-567-8900
+        </p>
       </div>
       <Footer />
     </div>

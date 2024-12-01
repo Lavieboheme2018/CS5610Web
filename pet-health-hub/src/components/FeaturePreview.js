@@ -104,9 +104,9 @@ const FeaturePreview = ({ isLoggedIn }) => {
         <p>
           <strong>Age:</strong> {pet.age} years
         </p>
-        <button disabled>View Details</button>
+        <button onClick={() => navigate(`/details/${pet.id}`)}>View Details</button>
       </div>
-    ));
+    ));  
 
   const renderUserPets = () =>
     pets.map(pet => (

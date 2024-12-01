@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import BreedSelector from '../components/BreedSelector';
 import "../styles/ProfilePage.css";
 
 const ProfilePage = () => {
@@ -292,15 +293,16 @@ const ProfilePage = () => {
 
               <div className="form-group">
                 <label htmlFor="breed">Breed:</label>
-                <input
-                  type="text"
-                  id="breed"
-                  name="breed"
-                  value={newPet.breed}
-                  onChange={handlePetInputChange}
-                  required
-                />
+                <BreedSelector
+                onSelectBreed={(selectedBreed) =>
+                  setNewPet((prev) => ({
+                    ...prev,
+                    breed: selectedBreed, 
+                  }))
+                 }
+                 />
               </div>
+
 
               <div className="form-group">
                 <label htmlFor="age">Age (years):</label>
