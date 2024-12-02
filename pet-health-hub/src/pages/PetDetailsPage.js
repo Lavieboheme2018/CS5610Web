@@ -442,7 +442,6 @@ const PetDetailsPage = () => {
           <section className="weight-section">
             <h2>Weight History</h2>
             <form onSubmit={handleAddWeight} className="add-record-form">
-              <label htmlFor="weight-input">Weight (kg)</label>
               <input
                 type="number"
                 id="weight-input"
@@ -541,7 +540,6 @@ const PetDetailsPage = () => {
             <form onSubmit={handleAddVaccination} className="add-record-form">
               {/* Vaccine Name Row */}
               <div className="form-row">
-                <label htmlFor="new-vaccine-name">Vaccine Name</label>
                 <input
                   type="text"
                   id="new-vaccine-name"
@@ -556,7 +554,6 @@ const PetDetailsPage = () => {
 
               {/* Vaccination Date Row */}
               <div className="form-row">
-                <label htmlFor="new-vaccine-date">Vaccination Date</label>
                 <input
                   type="date"
                   id="new-vaccine-date"
