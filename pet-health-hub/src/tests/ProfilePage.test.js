@@ -1,26 +1,23 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import ProfilePage from '../pages/ProfilePage';
 
-// Mock components
 jest.mock('../components/Header', () => () => <div>Mock Header</div>);
 jest.mock('../components/Footer', () => () => <div>Mock Footer</div>);
+jest.mock('../components/BreedSelector', () => () => <div>Mock BreedSelector</div>);
 
-// Mock navigation
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockNavigate
 }));
 
-// Mock fetch and URL methods
 global.fetch = jest.fn();
 global.URL.createObjectURL = jest.fn();
 global.URL.revokeObjectURL = jest.fn();
 
-// Mock data
 const mockUser = {
   _id: '123',
   username: 'testuser',
@@ -69,7 +66,6 @@ describe('ProfilePage Component', () => {
   });
 
   test('loads user profile and pets successfully', async () => {
-    // Mock successful profile and pets fetch
     global.fetch
       .mockImplementationOnce(() => Promise.resolve({
         ok: true,
@@ -91,7 +87,6 @@ describe('ProfilePage Component', () => {
   });
 
   test('handles profile update successfully', async () => {
-    // Mock initial fetches
     global.fetch
       .mockImplementationOnce(() => Promise.resolve({
         ok: true,
@@ -108,21 +103,18 @@ describe('ProfilePage Component', () => {
       expect(screen.getByText(mockUser.username)).toBeInTheDocument();
     });
 
-    // Mock profile update request
+    // Add successful update mock
     global.fetch.mockImplementationOnce(() => Promise.resolve({
       ok: true,
-      json: () => Promise.resolve({ ...mockUser, username: 'newusername' })
+      json: () => Promise.resolve({ message: "Username updated successfully!" })
     }));
 
-    // Click edit username button
     const editButtons = await screen.findAllByText('Edit');
     await userEvent.click(editButtons[0]);
 
-    // Enter new username
     const input = screen.getByPlaceholderText('Enter new username');
     await userEvent.type(input, 'newusername');
 
-    // Submit form
     const saveButton = screen.getByText('Save');
     await userEvent.click(saveButton);
 
@@ -132,7 +124,6 @@ describe('ProfilePage Component', () => {
   });
 
   test('handles adding new pet successfully', async () => {
-    // Mock initial fetches
     global.fetch
       .mockImplementationOnce(() => Promise.resolve({
         ok: true,
@@ -142,22 +133,20 @@ describe('ProfilePage Component', () => {
         ok: true,
         json: () => Promise.resolve(mockPets)
       }));
-
+  
     renderProfilePage();
-
-    // Click add pet button
+  
+    // Click Add New Pet button
     const addPetButton = await screen.findByText('Add New Pet');
     await userEvent.click(addPetButton);
-
-    // Fill out new pet form
+  
+    // Input pet details
     const nameInput = screen.getByLabelText('Pet Name:');
-    const breedInput = screen.getByLabelText('Breed:');
     const ageInput = screen.getByLabelText('Age (years):');
-
+  
     await userEvent.type(nameInput, 'Buddy');
-    await userEvent.type(breedInput, 'Labrador');
     await userEvent.type(ageInput, '2');
-
+  
     // Mock successful pet creation
     global.fetch.mockImplementationOnce(() => Promise.resolve({
       ok: true,
@@ -168,18 +157,17 @@ describe('ProfilePage Component', () => {
         age: 2
       })
     }));
-
+  
     // Submit form
-    const submitButton = screen.getByText('Add Pet');
-    await userEvent.click(submitButton);
-
+    const addButton = screen.getByText('Add Pet');
+    await userEvent.click(addButton);
+  
     await waitFor(() => {
       expect(global.alert).toHaveBeenCalledWith('Pet added successfully!');
     });
   });
 
   test('handles navigation to pet details', async () => {
-    // Mock initial fetches
     global.fetch
       .mockImplementationOnce(() => Promise.resolve({
         ok: true,
@@ -196,14 +184,11 @@ describe('ProfilePage Component', () => {
       expect(screen.getAllByText('View Details')[0]).toBeInTheDocument();
     });
 
-    // Click view details button for first pet
     await userEvent.click(screen.getAllByText('View Details')[0]);
-
     expect(mockNavigate).toHaveBeenCalledWith('/details/1');
   });
 
   test('handles form cancellation', async () => {
-    // Mock initial fetches
     global.fetch
       .mockImplementationOnce(() => Promise.resolve({
         ok: true,
@@ -220,10 +205,7 @@ describe('ProfilePage Component', () => {
       expect(screen.getAllByText('Edit')[0]).toBeInTheDocument();
     });
 
-    // Click edit username button
     await userEvent.click(screen.getAllByText('Edit')[0]);
-    
-    // Click cancel
     await userEvent.click(screen.getByText('Cancel'));
 
     expect(screen.queryByPlaceholderText('Enter new username')).not.toBeInTheDocument();
