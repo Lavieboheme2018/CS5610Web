@@ -4,8 +4,7 @@
 - **Team Members:** Wanyi Jiang, Sara Bavan, Kehan Yan
 https://docs.google.com/document/d/1V2sQEH0qCQt1l59_vDzWt1inwqAcjk4ZrZDPBVrHl4U/edit?tab=t.0
 
-Website Link:
-https://cs-5610-web-mu.vercel.app
+- **Website Link:** https://cs-5610-web-mu.vercel.app
 
 ---
 
@@ -28,6 +27,8 @@ https://cs-5610-web-mu.vercel.app
    MONGO_URI=mongodb+srv://cs5610final:cs5610final@cluster0.ojfdl.mongodb.net/pet-health-hub?retryWrites=true&w=majority&appName=Cluster0
    JWT_SECRET=your_secret_key
    PORT=3001
+   DOG_API_KEY=live_56u56MyAWhrJoSiUKYZvcf6VwXloVLpMK7fQxa2syRANvoeIuCY3XcCehIMuD90e
+   CAT_API_KEY=live_SyhBWxZTU1k8J2Jsyn4n5nIYvLCuKKdspV4vTFu1WQhyy3s0y4oPCg69f63dPPUa
    ```
    (Note: This .env file is already included in the repository.)
    
@@ -35,7 +36,7 @@ https://cs-5610-web-mu.vercel.app
    ```bash
    npm start
    ```
-   The backend will run at **`https://pet-health-hub-backend.onrender.com`** by default.
+   The backend will run at **`https://pet-health-hub-backend.onrender.com`**.
 
 ---
 
@@ -54,7 +55,7 @@ https://cs-5610-web-mu.vercel.app
    ```bash
    npm start
    ```
-   The frontend will run at **`https://cs-5610-web-mu.vercel.app`** by default.
+   The frontend will run at **`https://cs-5610-web-mu.vercel.app`**.
 
 ---
 
@@ -176,11 +177,6 @@ You can use the following sample data for initial testing:
 {
   "email": "testuser1@example.com",
   "password": "password111"
-}
-
-{
-  "email": "testuser2@example.com",
-  "password": "password222"
 }
 
 ```
