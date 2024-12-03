@@ -6,6 +6,7 @@ https://docs.google.com/document/d/1V2sQEH0qCQt1l59_vDzWt1inwqAcjk4ZrZDPBVrHl4U/
 
 - **Website Link:** https://cs-5610-web-mu.vercel.app
 
+- **Demo Video:** https://www.youtube.com/watch?v=dNpRUChopkg
 ---
 
 ## **1. Instructions to Set Up and Run the Project Locally**

@@ -167,6 +167,33 @@ const PetDetailsPage = () => {
     }
   };
 
+  const handleDeletePet = async () => {
+    if (!window.confirm('Are you sure you want to delete this pet?')) {
+      return;
+    }
+  
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`https://pet-health-hub-backend.onrender.com/api/pets/${petId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete pet');
+      }
+  
+      const result = await response.json();
+      console.log('Pet deleted successfully:', result);
+      navigate('/');
+    } catch (error) {
+      console.error('Error deleting pet:', error);
+      alert('Failed to delete pet');
+    }
+  };
+
   const handleAddWeight = async (e) => {
     e.preventDefault();
     if (!newWeight) return;
@@ -422,6 +449,7 @@ const PetDetailsPage = () => {
                 <div className="edit-actions">
                   <button onClick={handleUpdatePet}>Save Changes</button>
                   <button onClick={() => setIsEditing(false)}>Cancel</button>
+                  <button onClick={handleDeletePet} className="delete-button">Delete Pet</button>
                 </div>
               </div>
             ) : (
